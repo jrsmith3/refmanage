@@ -1,0 +1,173 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage[utf8x]{inputenc}
+
+\usepackage{geometry}
+
+%opening
+\title{Refmanage}
+\author{Joshua Ryan Smith}
+
+\begin{document}
+
+\maketitle
+\section{Lots of words}
+Here is a new workflow for dealing with only a pile of bibtex files. 
+
+Start with a set of bibtex files. Cat the list into a tellico database. Check each item for DOI. Replace bibtex-key with DOI. Replace URL with dx.doi.org/<DOI>. Use python to follow the dx.doi.org/<DOI> link to the webpage. Use beautifulsoup to find the PDF. Download the PDF. Change the name of the PDF file to the modified DOI. Import the new tc db into the main db and copy the new pdfs into ~/Documents/library. (beautifulsoup, urllib2 (urlretrieve)).
+
+Look, the main problem here is that I haven't written any kind of spec for this project, nor have I frozen a feature list for version 1. The issue is that reference management is a complex issue and I am looking at only one small piece of it with this refmanage software.
+
+I need a system to manage the published information I require that I have acquired. This information is typically articles from the scientific literature and books. Ostensibly, there exists organizational structures for this data by the publishers like ISBN numbers and DOIs.
+
+There are several components to this system based on how I use the information. One use case is that I sit down and read and annotate or make notes on the printed material. I also cite the material in manuscripts I write. I use the material to learn technical things I don't know.
+
+The physical manifestations of the material needs to be reasonably well organized. I need to be able to easily access the metadata of the material so that I can either search or generate citations to individual items such as with bibtex. I also need an easy way to add new material to the system: manually keying in bibliographic metadata should only occur rarely like when I'm getting antique manuscripts from the early 20th century or before.
+
+\subsection{Physical material}
+It is worth expanding the requirements of physical material. Obviously, this system will require a database of some sort. I will need to easily be able to find entries int he database having only a physical copy of an item in my hand. Conversely, I should be able to quickly locate my physical copy for an arbitrary database entry without having to wade through piles of paper.
+
+This system should not be overly complex, difficult to use, or difficult to set up. It should also handle exceptions (information that isn't a book or paper) gracefully. It should also be able to deal with duplicates, e.g. I download the same paper 5 times in a row.
+
+Some related systems that this system will affect are reading and writing. It is worthwhile to write a few paragraphs on this interaction. Reading usually happens because I want to learn something. This operation usually happens by me collecting lots of references into a large stack, popping one off, reading and annotating, then pushing it onto another stack, possibly with intentions of looking up forward or back refs.
+
+Writing usually involves generating a stack of literature and matching items in the stack to a certain location in the document I am creating. This map is then used to automatically generate citations based on the calls to the item in the stack and that item's metadata. In fact, this process applies not just to writing manuscripts, but posters and slide decks, too.
+
+Practically speaking, this system will have the following pieces:
+
+\begin{itemize}
+\item digital incarnations of documents
+\item physical incarnations of documents
+\item database of bibliographic metadata
+\end{itemize}
+
+Those things are just the local parts of the system. The system also relies on the DOI resolver, the internet, and things of that sort.
+
+I will also need a system to handle changes to the workflow or database schema. For example, I had an ad-hoc scheme of assigning bibtex keys to items, the I switched to whatever default the .bib files came with, now I'm using DOI. Each time I make one of these changes, I wind up breaking backwards compatibility. I've already had lots of ideas on how to improve this thing like inserting metadata into the PDFs themselves, overlaying DOI, tellico ID, etc. on the PDFs themselves, etc. This system needs to be able to deal with those updates without breaking. Some of these issues can be solved by my version control system.
+
+In fact, I have been designing a system to deal with reading material rather than software. The meta-issue is: how do I know when this system is complete? The system is described in this document. The document will contain the following sections:
+
+\begin{itemize}
+\item Motivation: why this system is necessary.
+\item Specifications and requirements.
+\item General design of the system: block diagrams, workflows, flow diagrams, etc.
+\item How the system can be gracefully upgraded.
+\item Suggestions for improvement of the system (e.g. embed bib metadata in PDFs).
+\end{itemize}
+
+I need to also consider the methods I use to collect papers and reference material.
+
+Whats the purpose of managing refs and formalizing this process? There are many. First, I already have a list of references that has over 200 items. In order to do my work as a scientist, I need to read papers etc. and cite them in my writing. Managing the references by hand is too tedious and time consuming so its out of the question. None of the other solutions that are available (bibsonomy, etc) seem to do exactly what I need.
+
+So what exactly do I need?
+
+\begin{itemize}
+\item Ability to easily incorporate refs into papers. The metadata is already there, I shouldn't have to manage it by hand. Bibtex + \LaTeX is clearly the solution for reasons I won't go into.
+\item Easy import of metadata from single items or a list of items.
+\item Ability to print lots of files at once (PDFs).
+\item Collaboration: ability to share the citation list with others (bibsonomy)
+\item Synchronization of metadata between citation database (bibsonomy or tellico) and PDF metadata.
+\item Easy grabbing of PDFs that are associated with the citation. 
+\item As much automation and as little by-hand-tweaking-and-data-entry as possible.
+\end{itemize}
+
+Here is a sketch of the solution.
+I'll have basically two components locally and probably a third solely for collaboration on the net. The two local components are a folder full of PDFs (possibly word docs, text files, HTML, \LaTeX, etc) and a database of metadata. There will be some implicit organization in the filesystem, but the user will have to look at the database to do much useful stuff. Again, the organizing principle is unique identifier; usually DOI or ISBN. I should be able to strip away everything else and as long as I retain the list of DOIs and ISBNs, I should be able to regenerate the entire database and set of PDFs without losing any data locally. Note: I need to consider my own papers in this database.
+
+I want to think about this system as a machine with a hopper: as long as I can get the information into a format that goes into the hopper, the tedium of collecting the metadata and PDF should be dealt with by the computer. There will be exceptional cases where I have to import a lot of metadata by hand, the system should make this process as easy as possible.
+
+What kinds of things will the system manage? In short, anything I can cite in a paper. The two main entries are other scientific papers( uniquely identified by DOI), and books (uniquely identified by ISBN). Both can be stored as PDFs on my computer. Also, sections or pages of books.
+
+What are the uses of this system? Mainly this system will be used to generate a bibtex file so that I can easily cite things when I write a paper. Secondly, the system will give me access to papers that I've read or need to read. Since I can just print them out. For example, I just imported like 20 papers into tellico after reading Sztelle's thesis. I want to grab all of those PDFs so I can read them and all of the metadata at the same time. I don't want to have to go back and import metadata on a case-by-case basis. It is better if I get it and don't need it than need it and then have to get it.
+
+Here is a stab at the workflow: I first get some references in some kind of inbox. These refs can be a (single or) list of pdfs somebody sends me, a printout somebody hands me, a list of refs from papers I've read, etc. That list is first turned into a corresponding list of DOIs or ISBNs. That list of DOIs or ISBNs is parsed, and the metadata for each item is retrieved. At the same time, the corresponding PDF is downloaded. In the metadata, the bibtex key is changed to the (modified) DOI or ISBN, the filename of the PDF is changed to the (modified) DOI or ISBN, and the metadata is embedded into the PDF. The PDF is put into the correct place in the filesystem and the metadata is imported into tellico.
+
+When I write a paper, I simply export the tellico db as a bibtex file and reference the appropriate keys.
+
+Scholarship is a fundamental component of scientific research. Scholarship in this context is the ability to put one's own work in the context of what's been reported, aka the literature. Navigating the literature is beyond the scope of what I'm addressing here so I won't deal with it. Scholarship involves the tedium of managing bibliographic citations. My goal is to reduce or eliminate that tedium using processes and computers so that I can spend my time and energy on scholarship and research.
+
+\LaTeX is a very good solution to eliminate much tedium in the preparation of manuscripts; specifically bibtex does much to eliminate the tedium of managing citations in a manuscript. Despite this advantage, one problem remains which is building the bibliographic database in the first place.
+
+Here is the space in which this problem lives: somehow I acquire a list of papers and various other references that I want to add to my citation database. I need a way to add those things to the database easily and without tedium. This process implies that I have a fairly well defined sense of what pieces of metadata constitute a complete reference item. The problem here is that there isn't a good automatic way to collect the citation metadata from a reference item and put it into the citation database. Second: given a list of citations, there isn't a good way to collect the corresponding PDFs, print them out, and ensure the resulting set of downloaded PDF files mean anything at a later date (they are all named getPDFservelet.pdf)
+
+Here are some components
+
+\begin{itemize}
+\item It would be useful to search within the local papers on my filesystem.
+\item I can use the DOI everywhere to cite a particular references
+\item I should have a container for reading and binders for storage of papers I've read.
+\item I need a way to share references with others. E.g. connotea, etc.
+\item It would be nice to OCR the PDFs I download.
+\item I would like to insert the bibliographic metadata into the PDFs themselves.
+\item BibTeXML and Pybtex are probably better for database storage than bibtex.
+\item Sometimes I would like to print out many papers at once.
+\item I should watermark all of the PDF printout hardcopies with their DOI.
+\item The filename of the PDF should also be its DOI (modified with double underscore replacing the slash character).
+\item BibTeXML: both Pybtex and tellico can parse this kind of file.
+\item I would like covers and first pages as images for all the entries in the database. Scanning, pdftk, and imagemagik convert can make this dream a reality.
+\end{itemize}
+
+The real magic would be to be able to grab the bibliographic metadata simply by using the DOI.
+
+NOTE: The fact that the .bib metadata file that comes from google scholar is different from the one that comes from the publisher is different from the one that comes from web of science bothers me. In other words, the sets have nonzero differences.
+
+\section{Overview}
+refmanage is a software package that removes the tedium of dealing with bibliographic metadata. It also centralizes my bibliographic metadata so it is easier for me to cite when I'm writing a manuscript in \LaTeX.
+
+Here is the problem and why it needs to be solved. As a matter of course, I need to read the literature and be familiar with the literature in my field. Unfortunately, scientific publishing is a byzantine wasteland where publishers do everything in their power to squeeze money out of universities by building walled gardens with little openness or interoperability. There is some work to scholarship that cannot be done by a computer like figuring out whats relevant and reading it. However, there is a lot of inane bookkeeping that is distracting. This package solves that inanity.
+
+Ultimately, I want to have a folder that includes PDFs of every reference I've looked up, and a bibliographic database with entries corresponding to each PDF. This setup addresses two issues: First, the bibliographic database makes citing references easy, I just stick the citation key into my \LaTeX document and bibtex does the rest. Second, the folder of PDFs winds up being a knowledgebase. The hope is that I can use a tool like spotlight to search through all of the text contained in the PDFs in the event that I need to find information.
+
+The local system combined wit the internet should make scholarship as easy as possible.
+
+The refmanage system will make the import of new items into my system easy.
+
+\section{Scenarios}
+Here's how I plan to use this system. First, I need to look something up, o I look around on the internet until I find the list of references I need. Most publisher have the bibliographic metadata for their articles available in bibtex format. If not, google scholar does. At the end of this collection process, I have a set of bibtex files (bibtex entries, really) and a set of corresponding PDFs. Refmanage streamlines the organization and integration of these items into my system. I execute a command and refmanage tells me which, if any, of the new refs are already in my system. It also tells me if I am missing critical information (the DOI) from any of the bibliographic entries. If so, I grab that info.
+
+Next, I take the sets of PDFs and import them into ...
+
+Look, this section of notes is depreciated.
+
+\section{Non-goals}
+This version will not support the following features:
+
+\begin{itemize}
+\item Maintenance on the existing bibliographic database and/or system.
+\item Fetching PDFs and bibliographic data from the internet given a DOI.
+\end{itemize}
+
+\section{What's left}
+Here are some lists of possible errors or user input during runtime.
+
+\begin{itemize}
+\item Cleanup auxiliary files?
+\item Location of library?
+\item Import new .tc database into mater?
+\item Location of master.tc?
+\item Move mod-doi pdfs to library?
+\item Updated master.bib?
+\end{itemize}
+
+There are also errors that can occur due to assumptions I'm making.
+
+\begin{itemize}
+\item What if there are duplicates in list of bibliographic references I am trying to import?
+\item What if some of the items in the list of bibliographic references I am trying to import don't have DOI?
+\end{itemize}
+
+Additional thoughts.
+
+\begin{itemize}
+\item bibxml
+\item clean up current master.tc
+\item add metadata to pdf files.
+\item OCR pdfs as necessary
+\item do I need to keep copies of the pdf as downloaded from the publisher?
+\item can I integrate this workflow/program even more with the internet (connotea/bibsonomy) or tellico? In other words, have a browser button that grabs bib data and pdf.
+\item Bigger picture: knowledgebase, workflow for writing.
+\item Grandfather scheme: making changes to the database scheme (bibtex\_key -> ISBN or DOI) shouldn't interfere with previous manuscripts I've written. I.e. I should be able to build old documents without search and replace \\cite commands.
+\end{itemize}
+
+Here are some thoughts on the bigger picture. Basically I want three big buckets: one containing electronic copies of all the papers I've downloaded. One containing all of the bibliographic metadata for all of those papers, and one containing an organized system of physical printouts of the papers. In this way I will have a straightforward point of entry to pull in citation metadata into my own manuscripts, and I will have a knowledgebase. Ostensibly I will be able to search through all of the pdfs for information.
+
+\end{document}
