@@ -17,26 +17,31 @@
 
 
 \section{Motivation}
-The objective of this project is to develop a system that streamlines the process of scholarship so that my expert time and energy is not inefficiently wasted on inane, time consuming tasks. This document describes the process of scholarship and writing, and separates the parts of this process which are time consuming but unavoidable from the parts that can be automated or delegated to a machine. Finally, I describe a system and a set of tools that streamline the process of scholarship and writing. 
+The objective of this project is to develop a system that streamlines the process of scholarship so that my expert time and energy are not inefficiently wasted on inane, time consuming tasks. This document describes the process of scholarship and writing, and separates the parts of this process which are time consuming but unavoidable from the parts that can be automated or delegated to a machine. Finally, I describe a system and a set of tools that streamline the process of scholarship and writing. 
 
-There are several routine tasks that are part of the work of science. Just like a musician must practice scales or a basketball player must practice free-throws, a scientist must practice scholarship and write about his results. Scholarship is the practice of understanding one's work int eh context of what has been reported in the literature. Among other things, scholarship involves learning, reading, and writing. A large part of scholarship involves wrangling the literature: the massive set of published information. Organizing and searching the literature is a science unto itself, but fortunately a number of tools and systems have been developed to make dealing with the literature a manageable endeavor even by a non-expert. Some of these tools are libraries and librarians, the internet, Google, Web of Science, PACS, digital object identifiers (DOI), international standard book number (ISBN), personal recommendations and my professional/social network, structures for formatting bibliographic data (RIS, bibtex), posts on the internet, and even \emph{The Literature} itself, in the form of lists of citations within manuscripts as well as what I call "forward references'' - works that cite a particular manuscript. Ultimately, the objective of a scientist is to contribute to humanity's understand of how the universe works. Practically, the scientist does this by contributing to the literature by linking his work into this vast web of information.
+There are several routine tasks that are part of the work of science. Just like a musician must practice scales or a basketball player must practice free-throws, a scientist must practice scholarship and write about his results. Scholarship is the practice of understanding one's work in the context of what has been reported in the literature. Among other things, scholarship involves learning, reading, and writing. A large part of scholarship involves wrangling the literature: the massive set of published information. Organizing and searching the literature is a science unto itself, but fortunately a number of tools and systems have been developed to make dealing with the literature a manageable endeavor even by a non-expert. Some of these tools are libraries and librarians, the internet, Google, Web of Science, PACS, digital object identifiers (DOI), international standard book number (ISBN), personal recommendations and my professional/social network, structures for formatting bibliographic data (RIS, bibtex), posts on the internet, and even \emph{The Literature} itself, in the form of lists of citations within manuscripts as well as what I call "forward references'' - works that cite a particular manuscript. Ultimately, the objective of a scientist is to contribute to humanity's understand of how the universe works. Practically, the scientist does this by contributing to the literature by linking his work into this vast web of information.
 
-
-
-\section{Background and Related Systems}
-My refmanage system will interact most with reading and writing. In order to best understand the refmanage requirements and specifications it is critical to understand the context in which refmanage must operate.
-
-\subsubsection{Writing}
-I have most felt the need for a robust reference management system while writing my own scientific manuscripts. Because \LaTeX has such a powerful system for abstracting cross-references and citations, it is the obvious tool for generating documents. The standard citation management for \LaTeX is bibtex, and at the heart of bibtex is the bibliographic database. I have found that one monolithic database of bibliographic items is best, since there is to cost to having unused bibliographic items, but it is far too tedious to try to make custom bibliographic databases for individual manuscripts. Consider: having a custom Bib\TeX database for each manuscript means manually adding bibliographic items to the database each time a citation needs to be added to the manuscript. On the other hand, a monolithic database means that all the bibliographic items are already present and adding a new citation to the manuscript is as simple as adding a \verb|\cite{}| command in the manuscript source. The \LaTeX parser simply ignores all the unused bibliographic items in the database. Therefore, the Bib\TeX database should include database entries for absolutely every piece of written material I have ever read. This requirement leads into the next related system, Reading.
-
-Practically speaking, writing usually involves generating a stack of literature and matching items in the stack to a certain location in the document I am creating. This map is then used to automatically generate citations based on the calls to the item in the stack and that item's metadata using bibtex. In fact, this process applies not just to writing manuscripts, but posters and slide decks, too.
+For what it's worth, I'm defining ``manuscript'' as an individual unit of \emph{The Literature}  - usually a book or scientific article but sometimes a post on the internet.
 
 
-\subsubsection{Reading}
-My main goal in reading is to learn; any individual text is a source of information as is the web of citations that traverses \emph{The Literature}. I do not know what particular manuscripts contain the information I need beforehand, so I typically start with keyword searches in a search engine to generate a kernel of manuscripts on a particular subject. In addition, I sometimes inherit this kernel from others either by receiving one or many manuscripts on a topic. For what it's worth, I'm defining "manuscript'' as an individual unit of \emph{The Literature}  - usually a book or scientific article but sometimes a post on the internet. I will read through this kernel, marking citations within this material that seem appropriate to look at later. Also it sometimes seems appropriate to look for the forward references for a particular manuscript. Libraries and librarians, Google Scholar, Web of Science, and publishers' websites all facilitate the discovery and collection of manuscripts. At the end of this process (there really isn't an end, just temporary exhaustion of all available means - should write more about this phenomenon), I have an understanding of the landscape and a set of manuscripts that is a representation of this understanding. It is the management of this set of manuscripts that motivates the need for refmanage.
 
-I find it far better to read a hardcopy of a scientific paper or book rather than a PDF, but I rarely print out webpages. I think that the two main parameters determining if I require a hardcopy are complexity/density of material and length.
+\section{Background, Related Systems, and Use Cases}
+A detailed description of the processes I use for reading and writing are beyond the scope of this document, but I will need to give an overview of these processes in order to show where the refmanage package fits.
 
+\subsection{Writing}
+I use latex to prepare my own manuscripts, and therefore I use bibtex to manage all of the citation metadata. I have found that a monolithic database is better than individual bibliographic databases for each manuscript I prepare. To manage the bibliographic database, I have been using the package Tellico because it can import and export many different formats (bibtex, RIS, etc.).
+
+Practically speaking, I collect a physical stack of manuscripts while I am writing, and to make a citation I will match the bibtex key of a particular manuscript to a particular location within the document. Latex then uses this map as well as the bibtex database to generate the proper citation indexing and the bibliography for the manuscript.
+
+The takeaway here is that unique identifiers for each item in the bibliographic database are critically important. These UIDs need to exist as the bibtex key within the bibliographic database, and the UID should be physically printed somewhere on the hardcopy of the manuscript. In this way I can simply copy the printed UID into the proper location of my manuscript and latex and bibtex will do all of the heavy lifting.
+
+
+\subsection{Searching and Reading the Literature}
+If writing is the back-end process of the refmanage system, the searching and reading to learn are the front-end processes. why do I need to read? I think there are at least two reasons. First, I need to understand what has already been reported in the literature so that I can convince myself of the novelty of my own work. Spanning the subspace of the literature that is relevant to my work is the only way to achieve that goal and amounts to collecting all of the relevant manuscripts. The second reason to search the literature is to actually learn things. For example, I once did a literature search to understand how atomic hydrogen interacted with the Si (100) surface. For both of these activities, the process I use to deal with the literature is the same.
+
+From a practical standpoint, I have developed a process to deal with the literature. I do not know what particular manuscripts contain the information I need beforehand, so I typically start with keyword searches in a search engine to generate a kernel of manuscripts on a particular subject. In addition, I sometimes inherit this kernel from others either by receiving one or many manuscripts on a topic. I will read through this kernel, marking citations within this material that seem appropriate to look at later. Also it sometimes seems appropriate to look for the forward references for a particular manuscript. At the end of this process I have an understanding of the landscape and a set of manuscripts that is a representation of this understanding.
+
+There are a few important takeaways from this discussion. First, my process for searching the literature results in a list of manuscripts; some of these manuscripts are relevant and some are not. It is mentally more expensive to sort the list according to relevance than it is to just include everything I've found in my bibliographic database. Therefore I should just import everything I find into my system. Second, I prefer to read a hardcopy of a manuscript as opposed to reading the HTML/PDF/etc. version on my computer.
 
 
 
@@ -46,90 +51,130 @@ I find it far better to read a hardcopy of a scientific paper or book rather tha
 
 
 \section{Specification and Requirements}
-In this section I will describe all of the requirements this system will have to meet based on the systems it supports. I will give use cases of this system. I will describe the cases this system will not address.
+In this section I will describe all of the requirements the refmanage system will have to meet based on the systems it supports, and I will describe the cases this system will not address.
+
 
 \subsection{Requirements}
-The main goal of this reference management system is to facilitate writing and reading by automating and removing the tedium of managing the collection of manuscripts I have read. In broad terms, there will be three main components of this system.
+The main goal of this reference management system is to facilitate writing and reading by automating and removing the tedium of managing the collection of manuscripts I have read. Based on the discussion of writing and reading in the previous section, there will be three main components of this system.
 
 \begin{itemize}
-\item Physical incarnations of manuscripts, e.g. printouts, books, etc.
-\item Electronic incarnations of manuscripts, e.g. PDFs, webpages, etc.
+\item Physical incarnations of manuscripts: printouts, books, etc.
+\item Electronic incarnations of manuscripts: PDFs, webpages, etc.
 \item A database with bibliographic data for each individual manuscript.
 \end{itemize}
 
-Hardcopies are typically very easy to interact with and therefore their presence as one of the components should be obvious. Given any individual hardcopy, it should be straightforward to find the reference in the database. Specifically, I should not have to directly query the database to cite a reference while I am writing a manuscript. The hard copy should contain the necessary bibtex key. Furthermore, it should be easy to locate any particular hardcopy without having to re-print. When searching for and collecting manuscripts for reading, it should be straightforward to batch print the set of manuscripts.
-
-Electronic incarnations of manuscripts should be located in one flat folder on a filesystem. Each manuscript should be a single file, and the filename should uniquely identify the manuscript contained. It would be very helpful if the files were searchable because then the collection of files would be a knowledgebase and hopefully tools like spotlight could be used. It would also be useful if each file contained structured bibliographic metadata identical to the metadata in the database.
-
-The database should include an item for every manuscript in the system. It should be automatic and very easy to import new items into the database. The bibliographic data should be complete and it should be a rare occurrence for me to manually key in an entry to the database. Importing an item into the database should simultaneously generate a hardcopy and an electronic copy appropriately linked an labeled and in the appropriate location. The database should have a pointer to the physical location of the hardcopy as well as a link to the electronic incarnation in the filesystem. I need a way to collect new manuscripts similar to GTD, and I need a system to manage hardcopies during the reading process.
-
- The database needs to be able to export to bibtex. Importing a single item or list of items should be equally easy. 
-
-This system should not be overly complex, difficult to use, or difficult to set up. It should also handle exceptions (information that isn't a book or paper) gracefully. It should also be able to deal with duplicates, e.g. I download the same paper 5 times in a row. The system should have as much automation and as little by-hand-tweaking-and-data-entry as possible. Finally, the system should be robust against changes made by publishers, i.e. critical components shouldn't depend on a system a publisher might change without warning.
-
 What kinds of things will the system manage? In short, anything I can cite in a paper. The two main entries are other scientific papers, books, and sections or pages of books.
 
+Here is a list of requirements.
+
+\begin{enumerate}
+% General notes about the system.
+\item For each manuscript, there should be a single and individual physical incarnation, a single and individual electronic incarnation, and a single entry in the database. Single means no duplicates, and individual means no concatenation of multiple manuscripts into a single unit. Subsections of individual manuscripts may exist in the database, such as page ranges within a book, but should not typically exist as physical or electronic incarnations. This requirement means that each file should contain one and only one complete manuscript, etc.
+
+\item It should be a rare occurrence for me to manually key in an entry to the database or to import/maintain any part of the system by hand.
+
+\item Importing an arbitrary number of items into the system should be easy and automatic. The database item, electronic incarnation, and physical incarnation should all be generated simultaneously. At the time of import, all database, electronic, and physical items should be marked, labeled, and linked appropriately and automatically. 
+
+\item As a default, a single command should import items into the system. However, sufficient granularity should exist to execute individual steps of the process.
+
+\item Collecting and processing new manuscripts should occur in a fashion similar to GTD.
+
+\item The system should not be overly complex, difficult to use, or difficult to set up. 
+
+\item The system should handle exceptions (information that isn't a book or paper) gracefully. 
+
+\item The system should not import duplicates. If the importer notices a duplicate, a warning should be thrown. Manually manipulating the system is the only way to thwart this functionality.
+
+\item This system should be robust against changes made by third parties (e.g. publishers, the developer of Tellico, etc.). In other words, critical parts of the process or toolchain should not break simply because a third party changes functionality.
+
+\item This system will tend to import more than I need. The economics work out such that it is better to get something that I don't need rather than to need something but not have it. There is a negligible cost to importing superfluous items, I don't typically know what is important at the outset of collecting and reading manuscripts, and there is an additional mental cost to organizing things according to relevance after I have read them.
+
+\item Making changes to the system should not break backwards compatibility. In other words, I should be able to make dramatic changes to the system or toolchain and I should still be able to build my old manuscripts using latex without rewriting them.
 
 
-Since there is no cost to having superfluous bibliographic items in the database and since I don't know which manuscripts are useful beforehand, this system should just import every manuscript that I find during the collection phase of reading. It is better if I get it and don't need it than need it and then have to get it.
+% Scripts and programs.
+\item Scripts and programs which are part of the system should be tidy in their business. Locations of temporary files should be explicit and cleanup of temporary files should be sensible.
+
+\item Options controlling the behavior of scripts and programs should be contained in a config file. This config file should be in some kind of structured plaintext format like XML. For example, the location of the folder containing the electronic incarnations of manuscripts, the location of the database, etc. should all be explicitly specified in the config file.
 
 
+% Physical incarnations.
+\item Given any individual hardcopy, I should not have to query the database in order to cite the manuscript in my own manuscript. Therefore, the bibtex key should appear on the hardcopy.
+
+\item It should be easy to locate any particular hardcopy. I shouldn't have to spend hours searching through a stack of papers or books to find what I'm looking for.
+
+\item I should be able to easily batch print a set of manuscripts. After searching the literature, I usually end up with a set of \verb|~10| manuscripts in PDF format. I should be able to execute at most a single command to have them all appear at the printer.
+
+\item I need a system to manage hardcopies during the reading process.
 
 
+% Electronic incarnations.
+\item Electronic incarnations of manuscripts should be located in one flat folder in the filesystem. 
+
+\item The filename of the electronic incarnation of the manuscript should uniquely identify the manuscript contained therein.
+
+\item The files representing electronic incarnations of manuscripts should be searchable because then the collection of files would be a knowledgebase and tools like spotlight could be used to search through the set of files.
+
+\item Each file representing the electronic incarnation of a manuscript should contain structured bibliographic metadata identical to the metadata in the database.
 
 
+% Database.
+\item For each item in the database, the bibliographic data should be complete.
+
+\item The database should have a pointer to the physical location of the hardcopy 
+
+\item The database should have a link to the electronic incarnation in the filesystem. 
+
+\item The database needs to be able to export to bibtex. Having Tellico as part of the toolchain satisfies this condition.
+\end{enumerate}
 
 
 \subsection{Non-goals}
 This version will not support the following features:
 
-\begin{itemize}
+\begin{enumerate}
 \item Maintenance on the existing bibliographic database and/or system.
-\end{itemize}
-
-
-\subsection{Requirements List}
-
-
-
-
+\end{enumerate}
 
 
 \section{General Design}
-As I said before, this system will have three components:
+This section contains descriptions, block diagrams, workflows, flow diagrams, etc which describe how the refmanage system works. It will also contain a subsection on how the system can be gracefully upgraded.
 
-\begin{itemize}
-\item Hardcopies of each manuscript.
-\item Electronic copies of each manuscript.
-\item A database containing all the structured bibliographic metadata for each manuscript.
-\end{itemize}
+\subsection{Organization of the System}
+In this section I will describe how the entire refmanage system is organized as well as what third party elements the system depends on. A number of components and systems already exist which the refmanage system can leverage, some of these pre existing components are international standards. 
+
+It is critical that each item in the system has a unique identifier. Things would be even better if that UID was also an international standard. Nearly every manuscript that exists in the literature is uniquely identified with a DOI. Moreover, every book is uniquely identified with an ISBN. These UIDs will be used as the bibtex keys of the manuscript. For papers, the DOI will be marked on the physical incarnation so I can easily cite a manuscript I'm holding in a document I'm writing. Every book has the ISBN printed somewhere on the book itself, therefore I can easily cite a book in hand while writing a document. I will use the ISBN-13 if it is printed on the book, otherwise I'll use the ISBN-10. Sometimes I will need to only refer to a subsection of a book. In this case, I will use a bibtex key of the book's ISBN with the following suffix appended: \verb|_startpage-endpage|. 
+
+Besides books and papers, I will deal with other items I need to cite on a case-by-case basis, preferring a published international standard UID as the bibtex key. If it turns out that I routinely need to deal with a particular category of items, I will specify it in this document at a later date.
+
+The refmanage system is made up of a physical component, an electronic component, and a database. The physical component includes books and papers that have been printed and bound with staples or binder clips. The books will be located on a bookshelf in my office. Since the number of books I own is small, a glance at the bookshelf should be all that's necessary to find what I need. A more robust organizational system can be developed as necessary. On the other hand, the number of papers printed out will be large and they will therefore require more organization. It is best to think of these papers organized as a stack or an indexed list: as I acquire new papers, they wind up on the bottom of the stack. The DOI is not the right way to organize the physical stack since new papers may need to be placed within the stack as opposed to just the end. Papers will be marked with and organized according to their Tellico ID (described below), which is simply a unique incremental index for each item in the database. Papers will be stored in three-ring binders marked with the range of Tellico IDs. In this way, searches can be executed on the knowledgebase of files and the corresponding physical incarnation of the manuscript can be easily found. The database can be used to find a Tellico ID given a DOI, title, author, etc. Finally, subsets of the physical incarnations of papers can be removed and easily replaced without disturbing the organization of the system.
+
+The electronic component of the refmanage system is a folder on the filesystem containing electronic incarnations of manuscripts, mostly PDF files. The name for each file will be the DOI/ISBN of the corresponding manuscript. The filename will exactly match the bibtex key in the database except as follows: the DOI will be modified such that the slash character (/) is replaced with double underscore characters (\verb|__|). This construction avoids disallowed characters in filenames.
+
+Ultimately, I will need a single monolithic bibtex file to reference in my latex documents. However, the bibtex format is difficult to work with programmatically and I would prefer to deal with an XML file or a real database like sqlite. I have been using Tellico for a number of years to manage my bibliographic database, and it is the right tool to continue using moving forward. The Tellico database file is a compressed XML file which can easily be manipulated using python. Tellico itself has a number of command line options which can also be accessed via python. Tellico can import and export in all the formats I need, and has a front end for easy database management. The Tellico database file should be located in the same directory as the electronic incarnations of the manuscripts. Tellico can export its database as a bibtex file; that bibtex database should be located in the same folder as everything else. Each entry in the Tellico database is indexed with a unique integer called the Tellico ID, and every new item added to the database gets the next incremented number. Since the physical incarnations of manuscripts are ordered as an indexed list, assigning each item a unique integer results in the easiest organization. Tellico also provides functionality to link the location of the electronic incarnation of a manuscript in the filesystem to the database entry. This hyperlinking will be done to match the database entries to their corresponding electronic incarnations.
+
+Currently all of the electronic files are located in \verb|~/Documents/library| which is a good location to stay with.
+
+To recap, using the DOI/ISBN as the bibtex key an insisting that UID is marked on the physical incarnation means that a physical pile of papers and books are sufficient to generate the citations in a document. Using these UIDs means that any physical incarnation of a document is unambiguously linked to the rest of the literature since the DOI and ISBN are international standards for identification. The DOI/ISBN scheme also means that the physical incarnation points both to the electronic incarnation and a database item, and vice-versa (in all directions). Finally, all of the physical incarnations can be easily sorted using the Tellico ID. This sorting provides a way to quickly find a specific physical incarnation of a manuscript within the stack.
+
+Most publishers' websites provide both a PDF file containing the manuscript and the bibliographic metadata in a downloadable format either as a bibtex file or RIS file. Additionally, Google Scholar provides the bibliographic metadata as a .bib file. These citation files generally come with some default bibtex key, but also the DOI. I would prefer to use the citation file from the publisher's website, but the bibtex file from Google is also acceptable. Using publisher provided bibliographic metadata is the best way to ensure the data is complete and since the data is already there, these files will eliminate errors that occur via hand-transcription.
+
+I will use python to write all of the scripts and programs necessary for automation.
 
 
-This section will contain block diagrams, workflows, flow diagrams, etc. It will also contain a subsection on how the system can be gracefully upgraded.
 
-Here is a new workflow for dealing with only a pile of bibtex files. 
+\subsection{Workflow}
+First, I will find a list of manuscripts I need. Then I will go to the websites of those manuscripts and download the citation files for each one into a folder on my filesystem. I will execute a script that does the following things. First, it will concatenate all of the citation files from a specified directory into a new tellico database file. It will then step through the items and tell me if any of  the items are missing a DOI. If some are missing, the program will exit and clean up any files it made. I will fix the problems by hand. Once everything has a DOI, the program will look at my current tellico database and figure out if any of the items that I'm trying to import are already in the database. It will achieve this search by comparing DOIs/ISBNs. If there are duplicates, the importer will warn me and set the duplicates aside. For the non-duplicates, the importer will step through the list of items and replace the default bibtex key with the DOI.
 
-Start with a set of bibtex files. Cat the list into a tellico database. Check each item for DOI. Replace bibtex-key with DOI. Replace URL with dx.doi.org/<DOI>. Use python to follow the dx.doi.org/<DOI> link to the webpage. Use beautifulsoup to find the PDF. Download the PDF. Change the name of the PDF file to the modified DOI. Import the new tc db into the main db and copy the new pdfs into ~/Documents/library. (beautifulsoup, urllib2 (urlretrieve)).
+Next, the importer will use the DOI and the DOI resolver to download the PDFs of each manuscript. If the importer is unable to download the PDF, it will display a warning and remember the list of PDFs it was unable to get. Once a PDF is downloaded, the importer will rename the file to the modified DOI. Any PDF that needs to be OCR'd will be done so at this time. The importer will take the metadata from the database entry and embed it into the PDF.
 
-Here is a sketch of the solution.
-I'll have basically two components locally and probably a third solely for collaboration on the net. The two local components are a folder full of PDFs (possibly word docs, text files, HTML, \LaTeX, etc) and a database of metadata. There will be some implicit organization in the filesystem, but the user will have to look at the database to do much useful stuff. Again, the organizing principle is unique identifier; usually DOI or ISBN. I should be able to strip away everything else and as long as I retain the list of DOIs and ISBNs, I should be able to regenerate the entire database and set of PDFs without losing any data locally. Note: I need to consider my own papers in this database.
-
-I want to think about this system as a machine with a hopper: as long as I can get the information into a format that goes into the hopper, the tedium of collecting the metadata and PDF should be dealt with by the computer. There will be exceptional cases where I have to import a lot of metadata by hand, the system should make this process as easy as possible.
-
-Here is a stab at the workflow: I first get some references in some kind of inbox. These refs can be a (single or) list of pdfs somebody sends me, a printout somebody hands me, a list of refs from papers I've read, etc. That list is first turned into a corresponding list of DOIs or ISBNs. That list of DOIs or ISBNs is parsed, and the metadata for each item is retrieved. At the same time, the corresponding PDF is downloaded. In the metadata, the bibtex key is changed to the (modified) DOI or ISBN, the filename of the PDF is changed to the (modified) DOI or ISBN, and the metadata is embedded into the PDF. The PDF is put into the correct place in the filesystem and the metadata is imported into tellico.
-
-When I write a paper, I simply export the tellico db as a bibtex file and reference the appropriate keys.
-
-The real magic would be to be able to grab the bibliographic metadata simply by using the DOI.
-
-NOTE: The fact that the .bib metadata file that comes from google scholar is different from the one that comes from the publisher is different from the one that comes from web of science bothers me. In other words, the sets have nonzero differences.
-
+Next, the importer will move all of the PDFs into the library directory. The importer will also import the tellico file with the new entries into the existing database. The importer will watermark every page of the PDF with the DOI and tellico ID. Finally, the importer will send every PDF to the printer, and regenerate the .bib database file from the tellico file, and exit.
 
 
 \subsection{Upgrading and evolution}
 All systems must evolve in order to handle changing requirements. My hope is that I can capture much of the functionality I need with this first version, but it is prudent to make the system flexible to handle changes.
 
-Consider the following: when I first started using tellico to handle my references, I had a custom scheme to name bibtex keys: a, b, m, etc. for article, book, manual, then a four-digit number that I incremented for each new entry. At some point I got sick of keying in new bibtex keys and changing filenames manually, so I just started using whatever bibtex key came with the bibtex file I got from the publisher's website. Now I realize that DOI and ISBN are the best to use for bibtex keys (more on that later). To maintain consistancy, I should change all of the database items' bibtex keys, but that would break compatibility with old versions of manuscripts.
+Consider the following: when I first started using tellico to handle my references, I had a custom scheme to name bibtex keys: a, b, m, etc. for article, book, manual, then a four-digit number that I incremented for each new entry. At some point I got sick of keying in new bibtex keys and changing filenames manually, so I just started using whatever bibtex key came with the bibtex file I got from the publisher's website. Now I realize that DOI and ISBN are the best to use for bibtex keys (more on that later). To maintain consistency, I should change all of the database items' bibtex keys, but that would break compatibility with old versions of manuscripts.
 
 I've already had lots of ideas on how to improve this thing like inserting metadata into the PDFs themselves, overlaying DOI, tellico ID, etc. on the PDFs themselves, etc. This system needs to be able to deal with those updates without breaking. Some of these issues can be solved by my version control system.
 
@@ -156,30 +201,13 @@ There are also errors that can occur due to assumptions I'm making.
 \item What if some of the items in the list of bibliographic references I am trying to import don't have DOI?
 \end{itemize}
 
-Additional thoughts.
+\subsection{Additional thoughts}
 
 \begin{itemize}
 \item bibxml
 \item clean up current master.tc
-\item add metadata to pdf files.
-\item OCR pdfs as necessary
 \item do I need to keep copies of the pdf as downloaded from the publisher?
 \item can I integrate this workflow/program even more with the internet (connotea/bibsonomy) or tellico? In other words, have a browser button that grabs bib data and pdf.
-\item Bigger picture: knowledgebase, workflow for writing.
-\item Grandfather scheme: making changes to the database scheme (bibtex\_key -> ISBN or DOI) shouldn't interfere with previous manuscripts I've written. I.e. I should be able to build old documents without search and replace \\cite commands.
-\end{itemize}
-
-Here are some thoughts on the bigger picture. Basically I want three big buckets: one containing electronic copies of all the papers I've downloaded. One containing all of the bibliographic metadata for all of those papers, and one containing an organized system of physical printouts of the papers. In this way I will have a straightforward point of entry to pull in citation metadata into my own manuscripts, and I will have a knowledgebase. Ostensibly I will be able to search through all of the pdfs for information.
-
-
-
-
-
-
-\section{Future Improvements}
-Like embedding bib metadata in PDFs or OCRing PDFs.
-
-\begin{itemize}
 \item BibTeXML and Pybtex are probably better for database storage than bibtex.
 \item BibTeXML: both Pybtex and tellico can parse this kind of file.
 \item I would like covers and first pages as images for all the entries in the database. Scanning, pdftk, and imagemagik convert can make this dream a reality.
