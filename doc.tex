@@ -5,6 +5,15 @@
 \usepackage{setspace}
 \doublespacing
 
+\usepackage[pdftex,colorlinks=true]{hyperref}
+\hypersetup{
+pdftitle={Refmanage},
+pdfauthor={Joshua Ryan Smith (joshua.r.smith@gmail.com)},
+pdfsubject={Design documentation for refmanage system.},
+pdfkeywords={},
+pdfcreator={pdfTeX}
+}
+
 %opening
 \title{Refmanage}
 \author{Joshua Ryan Smith}	
@@ -153,9 +162,9 @@ The electronic component of the refmanage system is a folder on the filesystem c
 
 Ultimately, I will need a single monolithic bibtex file to reference in my latex documents. However, the bibtex format is difficult to work with programmatically and I would prefer to deal with an XML file or a real database like sqlite. I have been using Tellico for a number of years to manage my bibliographic database, and it is the right tool to continue using moving forward. The Tellico database file is a compressed XML file which can easily be manipulated using python. Tellico itself has a number of command line options which can also be accessed via python. Tellico can import and export in all the formats I need, and has a front end for easy database management. The Tellico database file should be located in the same directory as the electronic incarnations of the manuscripts. Tellico can export its database as a bibtex file; that bibtex database should be located in the same folder as everything else. Each entry in the Tellico database is indexed with a unique integer called the Tellico ID, and every new item added to the database gets the next incremented number. Since the physical incarnations of manuscripts are ordered as an indexed list, assigning each item a unique integer results in the easiest organization. Tellico also provides functionality to link the location of the electronic incarnation of a manuscript in the filesystem to the database entry. This hyperlinking will be done to match the database entries to their corresponding electronic incarnations.
 
-Currently all of the electronic files are located in \verb|~/Documents/library| which is a good location to stay with.
+Currently all of the electronic files are located in \verb|~/Documents/library| which is a good location to stay with, but the location should be a configurable option. 
 
-To recap, using the DOI/ISBN as the bibtex key an insisting that UID is marked on the physical incarnation means that a physical pile of papers and books are sufficient to generate the citations in a document. Using these UIDs means that any physical incarnation of a document is unambiguously linked to the rest of the literature since the DOI and ISBN are international standards for identification. The DOI/ISBN scheme also means that the physical incarnation points both to the electronic incarnation and a database item, and vice-versa (in all directions). Finally, all of the physical incarnations can be easily sorted using the Tellico ID. This sorting provides a way to quickly find a specific physical incarnation of a manuscript within the stack.
+To recap, using the DOI/ISBN as the bibtex key and insisting that UID is marked on the physical incarnation means that a physical pile of papers and books are sufficient to generate the citations in a document. Using these UIDs means that any physical incarnation of a document is unambiguously linked to the rest of the literature since the DOI and ISBN are international standards for identification. The DOI/ISBN scheme also means that the physical incarnation points both to the electronic incarnation and a database item, and vice-versa (in all directions). Finally, all of the physical incarnations can be easily sorted using the Tellico ID. This sorting provides a way to quickly find a specific physical incarnation of a manuscript within the stack.
 
 Most publishers' websites provide both a PDF file containing the manuscript and the bibliographic metadata in a downloadable format either as a bibtex file or RIS file. Additionally, Google Scholar provides the bibliographic metadata as a .bib file. These citation files generally come with some default bibtex key, but also the DOI. I would prefer to use the citation file from the publisher's website, but the bibtex file from Google is also acceptable. Using publisher provided bibliographic metadata is the best way to ensure the data is complete and since the data is already there, these files will eliminate errors that occur via hand-transcription.
 
@@ -164,12 +173,60 @@ I will use python to write all of the scripts and programs necessary for automat
 
 
 \subsection{Workflow}
-First, I will find a list of manuscripts I need. Then I will go to the websites of those manuscripts and download the citation files for each one into a folder on my filesystem. I will execute a script that does the following things. First, it will concatenate all of the citation files from a specified directory into a new tellico database file. It will then step through the items and tell me if any of  the items are missing a DOI. If some are missing, the program will exit and clean up any files it made. I will fix the problems by hand. Once everything has a DOI, the program will look at my current tellico database and figure out if any of the items that I'm trying to import are already in the database. It will achieve this search by comparing DOIs/ISBNs. If there are duplicates, the importer will warn me and set the duplicates aside. For the non-duplicates, the importer will step through the list of items and replace the default bibtex key with the DOI.
+The following describes a general, iterative workflow. This process may need to be repeated more than once in order to get all of the references into the database along with printouts, etc. In this section, databases in memory are denoted by \verb|\emph|, and filenames are denoted by \verb|\verb|.
 
-Next, the importer will use the DOI and the DOI resolver to download the PDFs of each manuscript. If the importer is unable to download the PDF, it will display a warning and remember the list of PDFs it was unable to get. Once a PDF is downloaded, the importer will rename the file to the modified DOI. Any PDF that needs to be OCR'd will be done so at this time. The importer will take the metadata from the database entry and embed it into the PDF.
+\begin{enumerate}
+\item The process starts either with a set of bibliographic metadata files (.bib, .ris, etc.) or with a tellico database file of items to be imported into the master database. The user would typically acquire the bibliographic metadata files by manually downloading them from the internet. The tellico database file may come from a step in this process because the initial database items were missing their DOI, PDFs for import database files couldn't be found, or for some other reason.
 
-Next, the importer will move all of the PDFs into the library directory. The importer will also import the tellico file with the new entries into the existing database. The importer will watermark every page of the PDF with the DOI and tellico ID. Finally, the importer will send every PDF to the printer, and regenerate the .bib database file from the tellico file, and exit.
+\item The user executes the importer. Default functionality is to look in the present directory for all bibliographic metadata files, but a command line switch can be used to specify a tellico database file located within the filesystem. If no existing tellico database file was specified, the importer looks at the present directory and generates a tellico database (\emph{import}) by importing all of the citation files.
 
+\item The importer steps through the items in \emph{import} and looks at each to see if each has a DOI. If not, the importer pops that item off into a new tellico database, \emph{no-doi}. At the end of this operation, the importer throws a warning and saves \verb|no_doi.tc| to the disk. 
+
+\item The importer checks the items remaining in \emph{import} to see if there are any duplicates by comparing DOIs. If so, the importer prunes \emph{import} such that there are only singletons, and throws a warning. The importer saves the list of items with duplicates to a tellico database file on the disk: \verb|import_dups.tc|. 
+
+\item The importer opens the master database (\emph{master}) and looks to see if any of the items in \emph{import} are already in \emph{master}. If so, the importer throws a warning, pops all of the duplicates out of \emph{import}, and saves the list of duplicates to the disk: \verb|master_dups.tc|.
+
+\item The importer steps through the remaining items in \emph{import}. For each item, the importer searches for a pdf file with filename = \verb|<modified DOI>.pdf|. The directory containing the PDFs defaults to pwd, but can also be specified via a switch on the command line when the importer is called. If the importer finds this file, it moves the file to the library folder (specified in the preferences file). If the importer cannot find the file locally, it uses the DOI and DOI resolver to attempt to download the file from the web. If the file is successfully downloaded, the importer renames the file to \verb|<modified DOI>.pdf| and places it in the library folder. If the importer cannot download the PDF in this way, it pops the entry out of \emph{import} into another tellico database, \emph{no-pdf}. Once all the items in \emph{import} have been dealt with, if there are items in \emph{no-pdf}, the importer throws a warning and saves the list to the disk: \verb|no_pdf.tc|. A command line switch can be used to keep copies of PDFs in the specified directory (they are moved to the library directory instead of copied by default)
+
+\item The importer steps through \emph{import} and \verb|no_pdf.tc| if it exists and does the following to each item in the database:
+
+\begin{itemize}
+\item Changes the bibtex key to the DOI.
+\item Changes the local URL to \verb|<library dir> + <modified DOI>.pdf|.
+\item Changes the URL to \verb|dx.doi.org/<DOI>|.
+\end{itemize}
+
+\item The importer saves \verb|import.tc| to the disk.
+
+\item The importer imports \emph{import} into \emph{master}.
+
+\item The importer steps through the list of newly imported items and does the following for each PDF corresponding to the item.
+
+\begin{itemize}
+\item Watermarks every page of the PDF with the DOI and tellico ID.
+\item Embeds bibliographic metadata into the PDF file.
+\item OCRs the PDF if necessary.
+\item Sends the PDF to the printer. Depending on the printer and the page count of the PDF, 3-hole punch paper is selected and the top left corner is stapled. Specific options are specified in the preferences file. This option to print the PDFs can be suppressed by a switch on the command line.
+\end{itemize}
+
+\item The importer regenerates the master bibtex database file from \emph{master} and prints stats about the import as well as the state of the present database.
+
+\item The importer cleans up files according to defaults and options specified on the command line. These options are discussed below.
+\end{enumerate}
+
+
+The importer should produce the following list of things once it has finished:
+
+\begin{enumerate}
+\item (OPTIONAL) A tellico database file of items that were missing their DOI: (\verb|no_doi.tc|). This problem can be resolved by opening the file in tellico and manually fixing the DOIs. Once the DOIs are fixed, the importer can be executed again with \verb|no_doi.tc| specified on the command line as the tellico database to import and everything should work.
+\item (OPTIONAL) A tellico database file whos items were missing the corresponding PDFs either because they weren't found in the filesystem or because they weren't downloadable from the internet (\verb|no_pdf.tc|). This problem will have to be resolved manually. If the user locates the PDFs, the importer can be run once again using \verb|no_pdf.tc| as the database to import. Otherwise \verb|no_pdf.tc| can simply be manually imported into \verb|master.tc| since the bibtex key, URL, etc. are already set properly.
+\item (deleted by default) A tellico database file containing all of the items that were imported (\verb|import.tc|). A command line switch can be set to prevent deletion of this file.
+\item (OPTIONAL, deleted by default) A tellico database file of items that were duplicates within the original list (\verb|import_dups.tc|). A command line switch can be set to prevent deletion of this file.
+\item (OPTIONAL, deleted by default) A tellico database file of items that were duplicates of items from the master database (\verb|master_dups.tc|). A command line switch can be set to prevent deletion of this file.
+\item Leftover citation files in the original directory. Possibly some PDFs will be leftover in the original directory as well as other files that were irrelevant to the refmanage operation.
+\end{enumerate}
+
+If the importer runs without generating items for 1 or 2, everything in the import directory can be safely deleted. Therefore, the importer will delete everything in this directory by default unless a switch on the command line is used.
 
 \subsection{Upgrading and evolution}
 All systems must evolve in order to handle changing requirements. My hope is that I can capture much of the functionality I need with this first version, but it is prudent to make the system flexible to handle changes.
@@ -213,6 +270,20 @@ There are also errors that can occur due to assumptions I'm making.
 \item I would like covers and first pages as images for all the entries in the database. Scanning, pdftk, and imagemagik convert can make this dream a reality.
 \end{itemize}
 
+\subsection{Maintenance tasks}
+The following list are actions that I know I'd like to do, but should be included as auxiliary functionality (if at all).
+
+\begin{itemize}
+\item Is the bibtex key = DOI?
+\item Does every entry have a DOI/ISBN/UID?
+\item Does every entry have URL = \verb|dx.doi.org/<DOI>|?
+\item Is the local URL like for every entry correct, or is the target not there?
+\item Are there files int eh library that do not have entries in the database?
+\item Is the filename for each file in the library correct as modified DOI?
+\item Are all the PDFs in the library OCRd?
+\item Do all the PDFs in the library have the bibliographic metadata embedded?
+\item Do all the PDFs int eh library have the DOI and tellico ID watermarked on all the pages?
+\end{itemize}
 
 
 
