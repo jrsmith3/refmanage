@@ -228,6 +228,30 @@ The importer should produce the following list of things once it has finished:
 
 If the importer runs without generating items for 1 or 2, everything in the import directory can be safely deleted. Therefore, the importer will delete everything in this directory by default unless a switch on the command line is used.
 
+\subsubsection{Files associated with this program}
+\begin{itemize}
+\item \verb|.refmanage|: configuration file.
+\item \verb|refmanage.py| and associated files: executable.
+\item \verb|master.tc|: master database.
+\end{itemize}
+
+\subsubsection{What's in the config file?}
+\begin{itemize}
+\item Location of the library. Defaults to \verb|~/Documents/library|.
+\item User defined defaults for command-line switches.
+\item Suppress certain behavior, e.g. don't OCR incoming PDFs.
+\end{itemize}
+
+\subsubsection{Command line switches}
+\begin{itemize}
+\item Keep \verb|import.tc|.
+\item Keep \verb|import_dups.tc|.
+\item Keep \verb|master_dups.tc|.
+\item Don't delete anything in the original directory upon successful completion.
+\item Location of tellico database file to ue used as import instead of bibliographic metadata files in pwd.
+\item Locaiton of PDFs to import (not in present directory).
+\end{itemize}
+
 \subsection{Upgrading and evolution}
 All systems must evolve in order to handle changing requirements. My hope is that I can capture much of the functionality I need with this first version, but it is prudent to make the system flexible to handle changes.
 
@@ -243,19 +267,7 @@ I've already had lots of ideas on how to improve this thing like inserting metad
 Here are some lists of possible errors or user input during runtime.
 
 \begin{itemize}
-\item Cleanup auxiliary files?
-\item Location of library?
-\item Import new .tc database into mater?
-\item Location of master.tc?
-\item Move mod-doi pdfs to library?
-\item Updated master.bib?
-\end{itemize}
-
-There are also errors that can occur due to assumptions I'm making.
-
-\begin{itemize}
-\item What if there are duplicates in list of bibliographic references I am trying to import?
-\item What if some of the items in the list of bibliographic references I am trying to import don't have DOI?
+\item First run: what if \verb|master.tc|, etc doesn't exist?
 \end{itemize}
 
 \subsection{Additional thoughts}
