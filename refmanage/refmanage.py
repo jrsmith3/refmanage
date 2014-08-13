@@ -11,9 +11,9 @@ from pybtex.database.input import bibtex
 from pybtex.database.output.bibtex import Writer
 
 
-def merge_bib(*args):
+def merge_pybdb(*args):
     """
-    Merge two bibtex databases, return the result.
+    Merge multiple pybtex databases, return the result.
     """
     new_bib = db.BibliographyData()
 
@@ -62,7 +62,7 @@ def main():
         except:
             filenames_failed_imports.append(filename)
 
-        combined_bib = merge_bib(combined_bib, bib)
+        combined_bib = merge_pybdb(combined_bib, bib)
 
     # Write combined_bib to the specified file.
     w = Writer()

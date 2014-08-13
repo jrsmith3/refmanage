@@ -24,11 +24,11 @@ class MethodsReturnType(unittest.TestCase):
     """
     Tests output types of the methods.
     """
-    def test_merge_bib(self):
+    def test_merge_pybdb(self):
         """
-        merge_bib should return pybtex.database.BibliographyData.
+        merge_pybdb should return pybtex.database.BibliographyData.
         """
-        merged = refmanage.merge_bib(bib2, bib3)
+        merged = refmanage.merge_pybdb(bib2, bib3)
         self.assertIsInstance(merged, pybtex.database.BibliographyData)
 
 
@@ -36,22 +36,22 @@ class MethodsFunctionality(unittest.TestCase):
     """
     Tests proper functionality of the methods.
     """
-    def test_merge_bib(self):
+    def test_merge_pybdb(self):
         """
-        The number of items in the object merge_bib creates should equal the sum of the number of items in all the calling args.
+        The number of items in the object merge_pybdb creates should equal the sum of the number of items in all the calling args.
         """
-        merged = refmanage.merge_bib(bib2, bib3)
+        merged = refmanage.merge_pybdb(bib2, bib3)
         len_merged = len(merged.entries)
         len_bib2 = len(bib2.entries)
         len_bib3 = len(bib3.entries)
 
         self.assertEqual(len_merged, len_bib2 + len_bib3)
 
-    def test_merge_bib_multiple_args(self):
+    def test_merge_pybdb_multiple_args(self):
         """
-        merge_bib should be able to merge an arbitrary number of args.
+        merge_pybdb should be able to merge an arbitrary number of args.
         """
-        merged = refmanage.merge_bib(bib2, bib3, bib4)
+        merged = refmanage.merge_pybdb(bib2, bib3, bib4)
         len_merged = len(merged.entries)
         len_bib2 = len(bib2.entries)
         len_bib3 = len(bib3.entries)
