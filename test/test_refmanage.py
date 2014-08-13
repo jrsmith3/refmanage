@@ -40,4 +40,10 @@ class MethodsFunctionality(unittest.TestCase):
         """
         The number of items in the object merge_bib creates should equal the sum of the number of items in all the calling args.
         """
-        pass
+        merged = refmanage.merge_bib(bib2, bib3)
+        len_merged = len(merged.entries)
+        len_bib2 = len(bib2.entries)
+        len_bib3 = len(bib3.entries)
+
+        self.assertEqual(len_merged, len_bib2 + len_bib3)
+        
