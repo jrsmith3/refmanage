@@ -15,4 +15,8 @@ setup(name = "refmanage",
                      "Intended Audience :: Science/Research",
                      "Topic :: Text Processing",
                      "Natural Language :: English",],
-      install_requires = ["pybtex"],)
+      install_requires = ["pybtex"],
+      entry_points = """
+      [console_scripts]
+      refmanage = refmanage.refmanage:main
+      """,)
