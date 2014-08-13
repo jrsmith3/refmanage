@@ -23,13 +23,17 @@ def merge_pybdb(*args):
 
     return new_bib
 
-def get_bib_filenames(fqpn):
+def list_bib_filenames(fqpn):
     """
-    Returns a list of fully-qualified paths of only bibTeX files.
+    List of filenames of only bibTeX files (.bib extension).
+
+    Note that this method only finds files with a .bib extension and does no checking that these files are valid bibTeX.
+
+    :param str fqpn: Fully-qualified path name of directory in which to find bibTeX files.
     """
     filenames = [f for f in os.listdir(fqpn) if os.path.isfile(os.path.join(fqpn,f))]
 
-    bib_filenames = [f for f in filenames if f.endswith(".bib")]
+    bib_filenames = [f for f in filenames if f.lower().endswith(".bib")]
 
     return bib_filenames
 
@@ -50,7 +54,7 @@ def main():
     if os.path.exists(target_fqpn):
         raise OSError("%s already exists." % target_fqpn)
 
-    bib_filenames = get_bib_filenames(pwd)
+    bib_filenames = list_bib_filenames(pwd)
     filenames_failed_imports = []
     combined_bib = db.BibliographyData()
 
