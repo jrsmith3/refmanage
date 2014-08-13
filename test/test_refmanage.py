@@ -20,6 +20,12 @@ b4_path = os.path.join(test_dir_root, "bib4.bib")
 bib4 = p4.parse_file(b4_path)
 
 
+class MethodsInput(unittest.TestCase):
+    """
+    Tests behavior of methods which take input arguments.
+    """
+    pass
+
 class MethodsReturnType(unittest.TestCase):
     """
     Tests output types of the methods.
@@ -30,6 +36,12 @@ class MethodsReturnType(unittest.TestCase):
         """
         merged = refmanage.merge_pybdb(bib2, bib3)
         self.assertIsInstance(merged, pybtex.database.BibliographyData)
+
+    def test_list_bib_filenames(self):
+        """
+        list_bib_filenames returns a list.
+        """
+        self.assertIsInstance(refmanage.list_bib_filenames(test_dir_root), list)
 
 
 class MethodsFunctionality(unittest.TestCase):
