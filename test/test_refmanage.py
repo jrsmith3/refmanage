@@ -46,4 +46,15 @@ class MethodsFunctionality(unittest.TestCase):
         len_bib3 = len(bib3.entries)
 
         self.assertEqual(len_merged, len_bib2 + len_bib3)
-        
+
+    def test_merge_bib_multiple_args(self):
+        """
+        merge_bib should be able to merge an arbitrary number of args.
+        """
+        merged = refmanage.merge_bib(bib2, bib3, bib4)
+        len_merged = len(merged.entries)
+        len_bib2 = len(bib2.entries)
+        len_bib3 = len(bib3.entries)
+        len_bib4 = len(bib4.entries)
+
+        self.assertEqual(len_merged, len_bib2 + len_bib3 + len_bib4)
