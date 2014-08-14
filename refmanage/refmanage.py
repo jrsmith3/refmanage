@@ -59,6 +59,12 @@ def import_bib_files(bib_filenames):
 
     return bib_filenames_files
 
+def merge():
+    """
+    Handles the case "merge" was called on the command line.
+    """
+    pass
+
 
 def main():
     """
