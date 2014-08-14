@@ -5,6 +5,7 @@
 refmanage - Manage a BibTeX database.
 """
 import os
+import glob
 import argparse
 import pybtex.database as db
 from pybtex.database.input import bibtex
@@ -26,18 +27,17 @@ def merge_pybdb(*args):
 
 def list_bib_filenames(fqpn):
     """
-    List of filenames of only bibTeX files (.bib extension).
+    List of fully-qualified pathnames of only bibTeX files (.bib extension).
 
     Note that this method only finds files with a .bib extension and does no checking that these files are valid bibTeX.
 
     :param str fqpn: Fully-qualified path name of directory in which to find bibTeX files.
     """
-    filenames = [f for f in os.listdir(fqpn) if os.path.isfile(os.path.join(fqpn,f))]
-
-    bib_filenames = [f for f in filenames if f.lower().endswith(".bib")]
+    fqpn_glob = os.path.join(fqpn, "*.bib")
+    bib_filenames = glob.glob(fqpn_glob)
 
     return bib_filenames
-    
+
 
 def import_bib_files(bib_filenames):
     """
