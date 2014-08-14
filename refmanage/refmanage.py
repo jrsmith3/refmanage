@@ -84,7 +84,7 @@ def main():
         default = False,
         action = "store_true",)
 
-    parser.add_argument("-i", "--include_dups",
+    parser.add_argument("-i", "--include-dups",
         help = "Include duplicates to target in soure bibTeX files if they exist.",
         default = False,
         action = "store_true",)
@@ -94,7 +94,14 @@ def main():
         type = str,)
 
     parser.add_argument("-d", "--delete",
-        help = "Delete successfully merged source bibTeX files.")
+        help = "Delete successfully merged source bibTeX files.",
+        default = False,
+        action = "store_true",)
+
+    parser.add_argument("-k", "--key-with-uid",
+        help = "Change bibTeX keys in source files to UID (DOI, ISBN, etc.).",
+        default = True,
+        action = "store_true",)
 
 
 
