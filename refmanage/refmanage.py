@@ -90,7 +90,7 @@ def main():
         action = "store_true",)
 
     parser.add_argument("target",
-        help = "File to contain combined bibTeX.",
+        help = "File into which bibTeX source(s) will be merged.",
         type = str,)
 
     parser.add_argument("-d", "--delete",
@@ -102,6 +102,12 @@ def main():
         help = "Change bibTeX keys in source files to UID (DOI, ISBN, etc.).",
         default = True,
         action = "store_true",)
+
+    parser.add_argument("source",
+        help = "File(s) containing bibTeX to be merged. If no argument is given, \"*.bib\" in the current directory is assumed. If a directory is given, \"*.bib\" in the specified directory is assumed.",
+        nargs = "*",
+        default = "*.bib",
+        type = str,)
 
 
 
