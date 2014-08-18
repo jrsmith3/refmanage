@@ -59,12 +59,24 @@ def import_bib_files(bib_filenames):
 
     return bib_filenames_files
 
-def merge():
+def list_source_args(sources):
+    """
+    Convert source arguments into individual fully-qualified pathnames.
+    """
+    fqpns = []
+    for cl_arg in cl_args:
+        fq_cl_arg = os.path.abspath(cl_arg)
+        fqpns.append(fq_cl_arg)
+
+    return fqpns
+
+def merge(cl_args):
     """
     Handles the case "merge" was called on the command line.
+
+    :param argparse.Namespace cl_args: Command-line arguments.
     """
     pass
-
 
 def main():
     """
@@ -109,9 +121,8 @@ def main():
         default = "*.bib",
         type = str,)
 
-
-
-    args = parser.parse_args()
+    cl_args = parser.parse_args()
+    merge(cl_args)
 
 
 
