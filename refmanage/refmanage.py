@@ -7,6 +7,7 @@ refmanage - Manage a BibTeX database.
 import os
 import glob
 import argparse
+import warnings
 import pybtex.database as db
 from pybtex.database.input import bibtex
 from pybtex.database.output.bibtex import Writer
@@ -59,16 +60,40 @@ def import_bib_files(bib_filenames):
 
     return bib_filenames_files
 
-def list_source_args(sources):
-    """
-    Convert source arguments into individual fully-qualified pathnames.
-    """
-    fqpns = []
-    for cl_arg in cl_args:
-        fq_cl_arg = os.path.abspath(cl_arg)
-        fqpns.append(fq_cl_arg)
 
-    return fqpns
+def list_bibtex_at_source(source):
+    """
+    List of bibTeX file(s) located at `source`.
+
+    :param str source: Path to bibTeX file(s). `source` can be relative or absolute, and it can contain a wildcard ("*"), it can correspond to a directory, or it can indicate a file. If `source` indicates a directory, this method returns a list of all files ending in extension ".bib".
+    """
+    fqpn = os.path.abspath(source)
+    bib_filenames = []
+    if "*" in fqpn:
+        bib_filenames = glob.glob(fqpn)
+    elif os.path.exists(fqpn):
+        if os.path.isdir(fqpn):
+            bib_filenames = glob.glob(os.path.join(fqpn, "*.bib"))
+        elif os.path.isfile(fqpn):
+            bib_filenames = [fqpn]
+        else:
+            raise IOError("Path %s appears to exist, but is neither a directory nor a file. Aborting." % fqpn)
+    else:
+        warnings.warn("Path %s not found, skipping." % source)
+
+
+def list_bibtex_at_sources(sources):
+    """
+    List of bibTeX file(s) located at every path in `sources`.
+
+    :param list sources: List containing paths to bibTeX file(s). Each element must conform to the input of `list_bibtex_at_source`.
+    """
+    bib_filenames = []
+    for source in sources:
+        bib_filenames += list_bibtex_at_source(source)
+
+    return bib_filenames
+
 
 def merge(cl_args):
     """
@@ -76,7 +101,9 @@ def merge(cl_args):
 
     :param argparse.Namespace cl_args: Command-line arguments.
     """
-    pass
+    bib_filenames = list_bibtex_at_sources(cl_args.source)
+    source_bib_filenames_files = import_bib_files(bib_filenames)
+
 
 def main():
     """
@@ -102,7 +129,7 @@ def main():
         action = "store_true",)
 
     parser.add_argument("target",
-        help = "File into which bibTeX source(s) will be merged.",
+        help = "File into which bibTeX source(s) will be merged. If the file does not exist, it will be created.",
         type = str,)
 
     parser.add_argument("-d", "--delete",
