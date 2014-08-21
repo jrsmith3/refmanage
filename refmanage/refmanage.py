@@ -95,7 +95,7 @@ def list_bibtex_at_sources(sources):
     return bib_filenames
 
 
-def merge(cl_args):
+def cl_merge(cl_args):
     """
     Handles the case "merge" was called on the command line.
 
@@ -149,7 +149,7 @@ def main():
         type = str,)
 
     cl_args = parser.parse_args()
-    merge(cl_args)
+    cl_merge(cl_args)
 
 
 
