@@ -95,6 +95,38 @@ def list_bibtex_at_sources(sources):
     return bib_filenames
 
 
+def import_target(target_pn, append = True):
+    """
+    Returns pybtex database of target bibTeX database.
+
+    If the path to `target_pn`, an exception will be raised. If the path to `target_pn` exists, but the file does not, the `append` flag is moot and an empty pybtex database will be returned.
+
+    :param str target_pn: Path to target bibTeX database. This path can be relative or absolute, but it must point to a file. The filename can have an arbitrary (or no) extension.
+    :param bool append: Switch to append source bibTeX to target or overwrite target with source bibTeX. Default = False.
+    """
+    target_fqpn = os.path.abspath(target_pn)
+    target_parent_dir = os.path.dirname(target_fqpn)
+
+    if not os.path.isdir(target_parent_dir):
+        # Parent directory does not exist.
+        # Raise exception
+        pass
+
+    if os.path.isdir(target_fqpn):
+        # Target is a directory and not a file.
+        # Raise exception
+        pass
+
+    if os.path.isfile(target_fqpn):
+        if append:
+            # Read file as pybtex database.
+            # Note that no additional `else` or `elif` statement is necessary here because the end result will be the same if the user wants to overwrite an existing target, or if no target exists: an empty pybtex database is returned.
+            pass
+    else:
+        # Create an empty pybtex database.
+        pass
+
+
 def cl_merge(cl_args):
     """
     Handles the case "merge" was called on the command line.
