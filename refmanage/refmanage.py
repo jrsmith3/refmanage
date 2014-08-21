@@ -140,8 +140,14 @@ def cl_merge(cl_args):
     source_bib_filenames_files = import_bib_files(bib_filenames)
 
     # Note the following merges everything without regards to duplicates or changing bibTeX keys to UIDs.
-    sources = merge_pybdb(source_bib_filenames_files.values())
-    target = import_target(cl_args.target, cl_args.overwrite)
+    sources_bib = merge_pybdb(source_bib_filenames_files.values())
+    target_bib = import_target(cl_args.target, cl_args.overwrite)
+
+    combined_bib = merge_pybdb(target_bib, sources_bib)
+
+    # Write combined_bib to the specified file.
+    w = Writer()
+    w.write_file(combined_bib, target_fqpn)
 
 
 def main():
