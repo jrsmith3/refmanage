@@ -104,6 +104,9 @@ def cl_merge(cl_args):
     bib_filenames = list_bibtex_at_sources(cl_args.source)
     source_bib_filenames_files = import_bib_files(bib_filenames)
 
+    # Note the following merges everything without regards to duplicates or changing bibTeX keys to UIDs.
+    sources = merge_pybdb(source_bib_filenames_files.values())
+
 
 def main():
     """
