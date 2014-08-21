@@ -95,36 +95,39 @@ def list_bibtex_at_sources(sources):
     return bib_filenames
 
 
-def import_target(target_pn, append = True):
+def import_target(target_pn, overwrite = False):
     """
     Returns pybtex database of target bibTeX database.
 
-    If the path to `target_pn`, an exception will be raised. If the path to `target_pn` exists, but the file does not, the `append` flag is moot and an empty pybtex database will be returned.
+    If the path to `target_pn`, an exception will be raised. If the path to `target_pn` exists, but the file does not, the `overwrite` flag is moot and an empty pybtex database will be returned.
 
     :param str target_pn: Path to target bibTeX database. This path can be relative or absolute, but it must point to a file. The filename can have an arbitrary (or no) extension.
-    :param bool append: Switch to append source bibTeX to target or overwrite target with source bibTeX. Default = False.
+    :param bool overwrite: Switch to append source bibTeX to target or overwrite target with source bibTeX. Default = False.
     """
     target_fqpn = os.path.abspath(target_pn)
     target_parent_dir = os.path.dirname(target_fqpn)
 
     if not os.path.isdir(target_parent_dir):
-        # Parent directory does not exist.
-        # Raise exception
-        pass
+        # Parent directory does not exist. Raise exception.
+        error_message = "Path %s does not exist. Exiting." % target_parent_dir
+        raise IOError(error_message)
 
     if os.path.isdir(target_fqpn):
-        # Target is a directory and not a file.
-        # Raise exception
-        pass
+        # Target is a directory and not a file. Raise exception.
+        error_message = "Target %s is a directory and not a file. Exiting." % target_parent_dir
+        raise IOError(error_message)
 
     if os.path.isfile(target_fqpn):
-        if append:
+        if not overwrite:
             # Read file as pybtex database.
-            # Note that no additional `else` or `elif` statement is necessary here because the end result will be the same if the user wants to overwrite an existing target, or if no target exists: an empty pybtex database is returned.
-            pass
+            # Note that no additional `else` or `elif` statement is necessary here because the end result will be the same if the user wants to overwrite an existing target or if no target exists. An empty pybtex database is returned in both cases.
+            parser = bibtex.Parser()
+            target_bib = parser.parse_file(target_fqpn)
     else:
         # Create an empty pybtex database.
-        pass
+        target_bib = db.BibliographyData()
+
+    return target_bib
 
 
 def cl_merge(cl_args):
@@ -138,6 +141,7 @@ def cl_merge(cl_args):
 
     # Note the following merges everything without regards to duplicates or changing bibTeX keys to UIDs.
     sources = merge_pybdb(source_bib_filenames_files.values())
+    target = import_target(cl_args.target, cl_args.overwrite)
 
 
 def main():
