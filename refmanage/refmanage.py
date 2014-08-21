@@ -198,33 +198,3 @@ def main():
 
     cl_args = parser.parse_args()
     cl_merge(cl_args)
-
-
-
-    # pwd = os.getcwd()
-    # target_fqpn = os.path.join(pwd, args.target)
-    # if os.path.exists(target_fqpn):
-    #     raise OSError("%s already exists." % target_fqpn)
-
-    # bib_filenames = list_bib_filenames(pwd)
-    # filenames_failed_imports = []
-    # combined_bib = db.BibliographyData()
-
-    # for filename in bib_filenames:
-    #     try:
-    #         parser = bibtex.Parser()
-    #         bib = parser.parse_file(filename)
-    #         del parser
-    #     except:
-    #         filenames_failed_imports.append(filename)
-
-    #     combined_bib = merge_pybdb(combined_bib, bib)
-
-    # # Write combined_bib to the specified file.
-    # w = Writer()
-    # w.write_file(combined_bib, target_fqpn)
-
-
-    # if len(filenames_failed_imports) > 0:
-    #     print "Could not parse the following files:"
-    #     print filenames_failed_imports
