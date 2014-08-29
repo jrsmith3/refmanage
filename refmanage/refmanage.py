@@ -65,6 +65,8 @@ def list_bibtex_at_source(source):
     """
     List of bibTeX file(s) located at `source`.
 
+    Returns a list of fully-qualified pathnames at the specified source.
+
     :param str source: Path to bibTeX file(s). `source` can be relative or absolute, and it can contain a wildcard ("*"), it can correspond to a directory, or it can indicate a file. If `source` indicates a directory, this method returns a list of all files ending in extension ".bib".
     """
     fqpn = os.path.abspath(source)
@@ -81,10 +83,14 @@ def list_bibtex_at_source(source):
     else:
         warnings.warn("Path %s not found, skipping." % source)
 
+    return bib_filenames
+
 
 def list_bibtex_at_sources(sources):
     """
     List of bibTeX file(s) located at every path in `sources`.
+
+    Returns a list of fully-qualified pathnames for all files having a '.bib' extension at the specified sources. 
 
     :param list sources: List containing paths to bibTeX file(s). Each element must conform to the input of `list_bibtex_at_source`.
     """
