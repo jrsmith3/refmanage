@@ -13,19 +13,6 @@ from pybtex.database.input import bibtex
 from pybtex.database.output.bibtex import Writer
 
 
-def merge_pybdb(*args):
-    """
-    Merge multiple pybtex databases, return the result.
-    """
-    new_bib = db.BibliographyData()
-
-    for arg in args:
-        for entry in arg.entries.itervalues():
-            new_bib.add_entry(entry.key, entry)
-
-    return new_bib
-
-
 def list_bib_filenames(fqpn):
     """
     List of fully-qualified pathnames of only bibTeX files (.bib extension).
