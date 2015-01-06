@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from distutils.core import setup
+import refmanage
 
 setup(name = "refmanage",
-      version = "0.0.1",
+      version = refmanage.__version__,
       author = "Joshua Ryan Smith",
       author_email = "joshua.r.smith@gmail.com",
       packages = ["refmanage"],

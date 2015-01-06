@@ -8,3 +8,5 @@ Base Library (:mod:`refmanage`)
 """
 
 from refmanage import *
+
+__version__ = "0.0.1"
