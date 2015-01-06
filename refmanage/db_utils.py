@@ -5,6 +5,22 @@ Management utils for bibTeX database objects
 import pybtex.database as db
 
 
+preferred_uris = {"article": "doi",
+                  "book": "isbn",
+                  "booklet": "",
+                  "conference": "",
+                  "inbook": "",
+                  "incollection": "",
+                  "inproceedings": "",
+                  "manual": "",
+                  "mastersthesis": "ocn",
+                  "misc": "",
+                  "phdthesis": "ocn",
+                  "proceedings": "",
+                  "techreport": "",
+                  "unpublished": "",}
+
+                  
 def cat_db(*args):
     """
     Concatenate multiple bib databases, return result
