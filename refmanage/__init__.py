@@ -8,5 +8,6 @@ Base Library (:mod:`refmanage`)
 """
 
 from refmanage import *
+import db_utils
 
 __version__ = "0.0.1"
