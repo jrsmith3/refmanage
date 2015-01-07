@@ -21,7 +21,7 @@ preferred_uris = {"article": "doi",
                   "unpublished": "",}
 
                   
-def cat_db(*args):
+def merge(*args):
     """
     Concatenate multiple bib databases, return result
     """
