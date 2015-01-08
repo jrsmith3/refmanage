@@ -23,7 +23,11 @@ preferred_uris = {"article": "doi",
                   
 def merge(*args):
     """
-    Concatenate multiple bib databases, return result
+    Combine an arbitrary number of bib databases
+
+    This method merges an arbitrary number of bib databases together and returns the result. Bib entries are added from each bib database in the order in which they are passed to the method. Bib databases which are passed to this method are not modified. 
+
+    This method also returns a list of all the duplicate bib entry objects, i.e. those with identical keys. Bib entries are added in the order bib database objects are passed to this method; therefore, duplicate bib entries in later bib database objects are not included in the returned bib database object. The list of duplicate bib entries contains *all* duplicates, including the entry in the returned bib database.
     """
     bib = db.BibliographyData()
 
