@@ -34,3 +34,17 @@ class MethodsInput(unittest.TestCase):
         What happens when each database contains an entry with the same key?
         """
         pass
+
+
+class MethodsReturnType(unittest.TestCase):
+    """
+    Tests output types of the methods
+    """
+    pass
+
+
+class MethodsFunctionality(unittest.TestCase):
+    """
+    Tests proper functionality of the methods
+    """
+    pass
