@@ -10,15 +10,15 @@ def main():
     parser = argparse.ArgumentParser(description="Manage BibTeX files")
 
     parser.add_argument("-t", "--test",
-                        help="Test parseability of BibTeX file(s)",
-                        action="store_true",)
+                        action="store_true",
+                        help="Test parseability of BibTeX file(s)",)
 
     parser.add_argument("-v", "--verbose",
-                        help="Verbose output",
-                        action="store_true",)
+                        action="store_true",
+                        help="Verbose output",)
 
     parser.add_argument("files",
-                        help="File(s) to test parseability")
+                        help="File(s) to test parseability",)
 
     args = parser.parse_args()
 
