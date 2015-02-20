@@ -18,6 +18,8 @@ def main():
                         help="Verbose output",)
 
     parser.add_argument("files",
+                        nargs="*",
+                        default="*.bib",
                         help="File(s) to test parseability",)
 
     args = parser.parse_args()
