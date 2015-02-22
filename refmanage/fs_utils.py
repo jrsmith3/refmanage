@@ -27,3 +27,24 @@ def handle_files_args(*paths_args):
 
     return paths
 
+
+def import_bib_files(bib_filenames):
+    """
+    Returns dict with fully-qualified path as key, corresponding bibTeX database as entry.
+
+    This method iterates over the filenames specified in `bib_filenames` and attempts to parse the file found at that path using pybtex. Each path is assigned to the key of a dict. If the parse is successful, the resulting object is assigned to the corresponding value in the dict. If the file cannot be parsed, a value of `None` is assigned to the value of the dict.
+
+    :param list bib_filenames: List of fully-qualified path names of candidate bibTeX files to import.
+    """
+    bib_filenames_files = {}
+    for filename in bib_filenames:
+        try:
+            parser = bibtex.Parser()
+            bib = parser.parse_file(filename)
+            del parser
+        except:
+            bib = None
+        bib_filenames_files[filename] = bib
+
+    return bib_filenames_files
+
