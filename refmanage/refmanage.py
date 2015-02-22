@@ -2,6 +2,7 @@
 import os
 import argparse
 import fs_utils
+from pybtex.database.input import bibtex
 
 
 def main():
@@ -34,8 +35,20 @@ def test(args):
     Logic for "test" functionality
     """
     paths = fs_utils.handle_files_args(*args.paths_args)
+    parseables = {}
+    unparseables = {}
+
     for path in paths:
-        print(path.resolve())
+        try:
+            parser = bibtex.Parser()
+            bib = parser.parse_file(path.resolve())
+            del parser
+            parseables[path] = bib
+        except:
+            bib = None
+            unparseables[path] = bib
+        
+    print [path.resolve() for path in unparseables.keys()]
 
 
 if __name__ == '__main__':
