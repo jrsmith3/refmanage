@@ -55,12 +55,12 @@ def test(args):
             parseables.append(key)
             parseables_msg += "\n\t" + str(key.resolve())
 
-    if args.parseable:
-        print(parseables_msg)
-    elif args.verbose:
+    if args.verbose:
         print(parseables_msg)
         print("\r")
         print(unparseables_msg)
+    elif args.parseable:
+        print(parseables_msg)
     else:
         print(unparseables_msg)
 
