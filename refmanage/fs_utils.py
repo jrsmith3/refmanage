@@ -2,6 +2,7 @@
 import os
 import glob
 import pathlib2 as pathlib
+from pybtex.database.input import bibtex
 
 
 def handle_files_args(*paths_args):
