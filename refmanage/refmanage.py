@@ -21,7 +21,7 @@ def main():
         nargs="*",
         default="*.bib",
         help="File(s) to test parseability",
-        metavar="file(s)")
+        metavar="files")
 
     args = parser.parse_args()
 
