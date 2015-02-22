@@ -38,17 +38,23 @@ def test(args):
     bibs_paths_dict = fs_utils.import_bib_files(*paths)
 
     parseables = []
+    parseables_msg = "The following files are parseable:"
     unparseables = []
+    unparseables_msg = "The following files are unparseable:"
+
 
     for key in bibs_paths_dict.keys():
         if bibs_paths_dict[key] is None:
             unparseables.append(key)
+            unparseables_msg += "\n\t" + str(key.resolve())
         else:
             parseables.append(key)
+            parseables_msg += "\n\t" + str(key.resolve())
 
-    print("The following files are unparseable:")
-    for unparseable in unparseables:
-        print("\t" + str(unparseable.resolve()))
+    if args.verbose:
+        print(parseables_msg)
+        print("\r")
+    print(unparseables_msg)
 
 
 if __name__ == '__main__':
