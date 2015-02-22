@@ -47,7 +47,7 @@ def import_bib_files(*paths):
             del parser
         except:
             bib = None
-        bibs_paths_dict[fqpn] = bib
+        bibs_paths_dict[path] = bib
 
     return bibs_paths_dict
 
