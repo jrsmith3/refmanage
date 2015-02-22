@@ -19,6 +19,10 @@ def main():
         action="store_true",
         help="Verbose output",)
 
+    parser.add_argument("-p", "--parseable",
+        action="store_true",
+        help="Print only list of parseable files",)
+
     parser.add_argument("paths_args",
         nargs="*",
         default="*.bib",
@@ -51,10 +55,14 @@ def test(args):
             parseables.append(key)
             parseables_msg += "\n\t" + str(key.resolve())
 
-    if args.verbose:
+    if args.parseable:
+        print(parseables_msg)
+    elif args.verbose:
         print(parseables_msg)
         print("\r")
-    print(unparseables_msg)
+        print(unparseables_msg)
+    else:
+        print(unparseables_msg)
 
 
 if __name__ == '__main__':
