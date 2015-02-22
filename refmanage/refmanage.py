@@ -32,23 +32,23 @@ def main():
 
 def test(args):
     """
-    Logic for "test" functionality
+    Implement "test" command-line functionality
     """
     paths = fs_utils.handle_files_args(*args.paths_args)
-    parseables = {}
-    unparseables = {}
+    bibs_paths_dict = fs_utils.import_bib_files(*paths)
 
-    for path in paths:
-        try:
-            parser = bibtex.Parser()
-            bib = parser.parse_file(path.resolve())
-            del parser
-            parseables[path] = bib
-        except:
-            bib = None
-            unparseables[path] = bib
-        
-    print [str(path.resolve()) for path in unparseables.keys()]
+    parseables = []
+    unparseables = []
+
+    for key in bibs_paths_dict.keys():
+        if bibs_paths_dict[key] is None:
+            unparseables.append(key)
+        else:
+            parseables.append(key)
+
+    print("The following files are unparseable:")
+    for unparseable in unparseables:
+        print("\t" + str(unparseable.resolve()))
 
 
 if __name__ == '__main__':
