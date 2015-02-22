@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import argparse
+import fs_utils
 
 
 def main():
@@ -24,6 +25,17 @@ def main():
         metavar="files")
 
     args = parser.parse_args()
+
+    test(args)
+
+
+def test(args):
+    """
+    Logic for "test" functionality
+    """
+    paths = fs_utils.handle_files_args(*args.paths_args)
+    for path in paths:
+        print(path.resolve())
 
 
 if __name__ == '__main__':
