@@ -48,7 +48,7 @@ def test(args):
             bib = None
             unparseables[path] = bib
         
-    print [path.resolve() for path in unparseables.keys()]
+    print [str(path.resolve()) for path in unparseables.keys()]
 
 
 if __name__ == '__main__':
