@@ -38,7 +38,7 @@ def import_bib_files(*paths):
     :param patlib.Path *paths: Path to BibTeX file.    
     :rtype dict:
     """
-    bib_filenames_files = {}
+    bibs_paths_dict = {}
     for path in paths:
         parser = bibtex.Parser()
         fqpn = str(path.resolve())
@@ -47,7 +47,7 @@ def import_bib_files(*paths):
             del parser
         except:
             bib = None
-        bib_filenames_files[fqpn] = bib
+        bibs_paths_dict[fqpn] = bib
 
-    return bib_filenames_files
+    return bibs_paths_dict
 
