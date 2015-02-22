@@ -17,10 +17,11 @@ def main():
         action="store_true",
         help="Verbose output",)
 
-    parser.add_argument("files",
+    parser.add_argument("paths_args",
         nargs="*",
         default="*.bib",
-        help="File(s) to test parseability",)
+        help="File(s) to test parseability",
+        metavar="file(s)")
 
     args = parser.parse_args()
 
