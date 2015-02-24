@@ -6,7 +6,7 @@ import fs_utils
 from pybtex.database.input import bibtex
 
 
-def main():
+def define_parser():
     """
     Command-line interface
     """
@@ -47,6 +47,14 @@ def cli_args_dispatcher(parser):
         print version.__version__
     elif args.test:
         test(args)
+
+
+def main():
+    """
+    Method called via command-line
+    """
+    parser = define_parser()
+    cli_args_dispatcher(parser)
 
 
 def test(args):
