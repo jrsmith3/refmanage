@@ -1,3 +1,10 @@
+0.1.0
+=====
+First release with minimal functionality
+
+* Implement "test" functionality to test if a specified file(s) contains parseable BibTeX.
+
+
 0.0.2
 =====
 Unofficial release. This version was created in the repo to differentiate it from the most alpha release of all, 0.0.1.
