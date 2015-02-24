@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import argparse
+import version
 import fs_utils
 from pybtex.database.input import bibtex
 
@@ -10,6 +11,10 @@ def main():
     Command-line interface
     """
     parser = argparse.ArgumentParser(description="Manage BibTeX files")
+
+    parser.add_argument("--version",
+        action="store_true",
+        help="Print version information")
 
     parser.add_argument("-t", "--test",
         action="store_true",
@@ -38,7 +43,10 @@ def cli_args_dispatcher(parser):
     """
     args = parser.parse_args()
 
-    test(args)
+    if args.version:
+        print version.__version__
+    elif args.test:
+        test(args)
 
 
 def test(args):
