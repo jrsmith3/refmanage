@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest
+import pathlib2 as pathlib
 from refmanage import fs_utils
 
 
@@ -21,6 +22,13 @@ class MethodsReturnType(unittest.TestCase):
         refmanage.fs_utils.handle_files_args should return a list
         """
         self.assertIsInstance(fs_utils.handle_files_args(""), list)
+
+    def test_import_bib_files(self):
+        """
+        refmanage.fs_utils.import_bib_files should return a dict
+        """
+        path = pathlib.Path("test/controls/empty.bib")
+        self.assertIsInstance(fs_utils.import_bib_files(path), dict)
 
 
 class MethodsReturnValues(unittest.TestCase):
