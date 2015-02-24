@@ -17,4 +17,4 @@ setup(name="refmanage",
                    "Topic :: Text Processing",
                    "Natural Language :: English", ],
       install_requires=["pybtex"],
-      entry_points={"console_scripts":"ref=refmanage.refmanage:main"},)
+      entry_points={"console_scripts": "ref=refmanage.refmanage:main"},)
