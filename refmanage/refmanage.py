@@ -25,7 +25,7 @@ def main():
 
     parser.add_argument("paths_args",
         nargs="*",
-        default="*.bib",
+        default=["*.bib"],
         help="File(s) to test parseability",
         metavar="files")
 
