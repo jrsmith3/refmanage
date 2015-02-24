@@ -29,6 +29,13 @@ def main():
         help="File(s) to test parseability",
         metavar="files")
 
+    return parser
+
+
+def cli_args_dispatcher(parser):
+    """
+    Dispatch functionality based on command-line args
+    """
     args = parser.parse_args()
 
     test(args)
@@ -66,4 +73,5 @@ def test(args):
 
 
 if __name__ == '__main__':
-    main()
+    parser = main()
+    cli_args_dispatcher(parser)
