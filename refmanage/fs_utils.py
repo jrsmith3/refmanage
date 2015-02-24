@@ -35,7 +35,7 @@ def import_bib_files(*paths):
 
     For each argument passed to this method, the corresponding BibTeX file is parsed. This method constructs a dictionary with each `pathlib.Path` argument as a key and the corresponding parsed BibTeX as the value. If the file specified by an argument to this method cannot be parsed, a value of `None` is recorded in the dictionary.
 
-    :param patlib.Path *paths: Path to BibTeX file.    
+    :param patlib.Path *paths: Path to BibTeX file.
     :rtype dict:
     """
     bibs_paths_dict = {}
@@ -50,4 +50,3 @@ def import_bib_files(*paths):
         bibs_paths_dict[path] = bib
 
     return bibs_paths_dict
-
