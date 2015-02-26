@@ -3,7 +3,6 @@ import os
 import argparse
 import version
 import fs_utils
-from pybtex.database.input import bibtex
 
 
 def define_parser():
