@@ -23,7 +23,14 @@ def define_parser():
         action="store_true",
         help="Verbose output",)
 
-    parser.add_argument("-p", "--parseable",
+    parseability = parser.add_mutually_exclusive_group()
+
+    parseability.add_argument("-u", "--unparseable",
+        action="store_true",
+        default=True,
+        help="Print only list of parseable files",)
+
+    parseability.add_argument("-p", "--parseable",
         action="store_true",
         help="Print only list of parseable files",)
 
@@ -77,16 +84,11 @@ def test(args):
             parseables.append(key)
             parseables_msg += "\n\t" + str(key.resolve())
 
-    if args.verbose:
-        print(parseables_msg)
-        print("\r")
-        print(unparseables_msg)
-    elif args.parseable:
+    if args.parseable:
         print(parseables_msg)
     else:
         print(unparseables_msg)
 
 
 if __name__ == '__main__':
-    parser = main()
-    cli_args_dispatcher(parser)
+    main()
