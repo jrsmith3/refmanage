@@ -45,9 +45,9 @@ def import_bib_files(*paths):
         fqpn = str(path.resolve())
         try:
             bib = parser.parse_file(fqpn)
-            del parser
         except PybtexError, e:
             bib = e
         bibs_paths_dict[path] = bib
+        del parser
 
     return bibs_paths_dict
