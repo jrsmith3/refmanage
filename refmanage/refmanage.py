@@ -3,6 +3,8 @@ import os
 import argparse
 import version
 import fs_utils
+from pybtex.database import BibliographyData
+from pybtex.exceptions import PybtexError
 
 
 def define_parser():
@@ -74,6 +76,10 @@ def test(args):
     parseables_msg = "The following files are parseable:"
     unparseables = []
     unparseables_msg = "The following files are unparseable:"
+
+
+    parseables = [path for path in paths if isinstance(bibs_paths_dict[path], BibliographyData)]
+    unparseables = [path for path in paths if isinstance(bibs_paths_dict[path], PybtexError)]
 
 
     for key in bibs_paths_dict.keys():
