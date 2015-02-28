@@ -64,19 +64,19 @@ class MethodsReturnValues(unittest.TestCase):
 
     def test_import_bib_files_one_invalid_entry_type(self):
         """
-        refmanage.fs_utils.import_bib_files should return a dict with a `None` value if the method argument points to a file containing invalid BibTeX
+        refmanage.fs_utils.import_bib_files should return a dict with a `pybtex.exceptions.PybtexError` value if the method argument points to a file containing invalid BibTeX
         """
         path = pathlib.Path("test/controls/invalid.bib")
         bibs = fs_utils.import_bib_files(path)
-        self.assertIsNone(bibs[path], None)
+        self.assertIsInstance(bibs[path], pybtex.exceptions.PybtexError)
 
     def test_import_bib_files_one_valid_one_invalid_entry_type(self):
         """
-        refmanage.fs_utils.import_bib_files should return a dict with a `pybtex.database.bibtex` value if the method argument points to a file containing one valid and one invalid BibTeX entry
+        refmanage.fs_utils.import_bib_files should return a dict with a `pybtex.exceptions.PybtexError` value if the method argument points to a file containing one valid and one invalid BibTeX entry
         """
         path = pathlib.Path("test/controls/one_valid_one_invalid.bib")
         bibs = fs_utils.import_bib_files(path)
-        self.assertIsNone(bibs[path], None)
+        self.assertIsInstance(bibs[path], pybtex.exceptions.PybtexError)
 
 
     # Test number of entries in output of import_bib_files

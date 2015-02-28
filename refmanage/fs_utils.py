@@ -3,6 +3,7 @@ import os
 import glob
 import pathlib2 as pathlib
 from pybtex.database.input import bibtex
+from pybtex.exceptions import PybtexError
 
 
 def handle_files_args(*paths_args):
@@ -33,7 +34,7 @@ def import_bib_files(*paths):
     """
     Create dictionary of path and corresponding BibTeX
 
-    For each argument passed to this method, the corresponding BibTeX file is parsed. This method constructs a dictionary with each `pathlib.Path` argument as a key and the corresponding parsed BibTeX as the value. If the file specified by an argument to this method cannot be parsed, a value of `None` is recorded in the dictionary.
+    For each argument passed to this method, the corresponding BibTeX file is parsed. This method constructs a dictionary with each `pathlib.Path` argument as a key and the corresponding parsed BibTeX as the value. If the file specified by an argument to this method cannot be parsed, a value of `pybtex.exceptions.PybtexError` is recorded in the dictionary.
 
     :param patlib.Path *paths: Path to BibTeX file.
     :rtype dict:
@@ -45,8 +46,8 @@ def import_bib_files(*paths):
         try:
             bib = parser.parse_file(fqpn)
             del parser
-        except:
-            bib = None
+        except PybtexError, e:
+            bib = e
         bibs_paths_dict[path] = bib
 
     return bibs_paths_dict
