@@ -49,13 +49,7 @@ def import_bib_files(*paths):
     bibs = []
 
     for path in paths:
-        parser = bibtex.Parser()
-        try:
-            bib = parser.parse_file(fqpn)
-        except PybtexError, e:
-            bib = e
-        del parser
-
+        bib = parse_bib_file(path)
         terse_msg = path.resolve()
         verbose_msg = generate_verbose_err_output_message(bib)
 
@@ -67,6 +61,23 @@ def import_bib_files(*paths):
         bibs.append(bib_dict)
 
     return bibs
+
+
+def parse_bib_file(path):
+    """
+    Parse BibTeX file located at `path`
+
+    This method attempts to parse the BibTeX file located at `path`. If the file is parseable, a `pybtex.database.BibliographyData` object is returned, containing the bibliography data contained in the file. If the file is unparseable, the exception raised by the parser is returned.
+
+    :param pathlib.Path path: Path to BibTeX file.
+    """
+    parser = bibtex.Parser()
+    try:
+        bib = parser.parse_file(path.resolve())
+    except PybtexError, e:
+        bib = e
+
+    return bib
 
 
 def bib_subdict(bibs, val_type):
