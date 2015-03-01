@@ -32,25 +32,41 @@ def handle_files_args(*paths_args):
 
 def import_bib_files(*paths):
     """
-    Create dictionary of path and corresponding BibTeX
+    List of dicts for use in refmanage
 
-    For each argument passed to this method, the corresponding BibTeX file is parsed. This method constructs a dictionary with each `pathlib.Path` argument as a key and the corresponding parsed BibTeX as the value. If the file specified by an argument to this method cannot be parsed, a value of `pybtex.exceptions.PybtexError` is recorded in the dictionary.
+    For each argument passed to this method, a dictionary of relevant information is built. These dicts are assembled into a list and returned.
+
+    Each dictionary contains several keys for use in the functionality of refmanage:
+
+    * path: A `pathlib.Path` object pointing to a file indicated on the command-line.
+    * bib: BibTeX data, stored as a `pybtex.database.BibliographyData` object, parsed from the file indicated by the `path` key. If the file was unparseable, the exception raised is stored in this variable.
+    * terse_msg: Message corresponding to the file to be printed to STDOUT when the "--verbose" flag is absent from the command line.
+    * verbose_msg: Message corresponding to the file to be printed to STDOUT when the "--verbose" flag is passed on the command line.
 
     :param patlib.Path *paths: Path to BibTeX file.
-    :rtype dict:
+    :rtype list:
     """
-    bibs_paths_dict = {}
+    bibs = []
+
     for path in paths:
         parser = bibtex.Parser()
-        fqpn = str(path.resolve())
         try:
             bib = parser.parse_file(fqpn)
         except PybtexError, e:
             bib = e
-        bibs_paths_dict[path] = bib
         del parser
 
-    return bibs_paths_dict
+        terse_msg = path.resolve()
+        verbose_msg = generate_verbose_err_output_message(bib)
+
+        bib_dict = {"path": path,
+            "bib": bib,
+            "terse_msg": terse_msg,
+            "verbose_msg": verbose_msg,}
+
+        bibs.append(bib_dict)
+
+    return bibs
 
 
 def bib_subdict(bibs, val_type):
