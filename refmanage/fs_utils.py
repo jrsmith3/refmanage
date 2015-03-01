@@ -79,7 +79,9 @@ def generate_test_message(bibs, verbose):
     else:
         verbose_msgs = [""] * len(terse_msgs)
 
-    return msgs
+    msg = interleave_test_messages(terse_msgs, verbose_msgs)
+
+    return msg
 
 
 def generate_verbose_err_output_message(err):
@@ -94,6 +96,20 @@ def generate_verbose_err_output_message(err):
         msg += get_context()
     except:
         pass
+
+    return msg
+
+
+def interleave_test_messages(terse_msgs, verbose_msgs):
+    """
+    Interleave messages to create output text
+
+    :param list terse_msgs:
+    :param list verbose_msgs:
+    :rtype str:
+    """
+    interleave_msgs = [x for t in zip(terse_msgs, verbose_msgs) for x in t]
+    msg = "".join(interleave_msgs)
 
     return msg
 
