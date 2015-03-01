@@ -78,7 +78,7 @@ def parse_bib_file(path):
     """
     parser = bibtex.Parser()
     try:
-        bib = parser.parse_file(path.resolve())
+        bib = parser.parse_file(str(path.resolve()))
     except PybtexError, e:
         bib = e
 
