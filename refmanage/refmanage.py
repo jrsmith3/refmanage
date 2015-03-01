@@ -72,28 +72,14 @@ def test(args):
     paths = fs_utils.handle_files_args(*args.paths_args)
     bibs_paths_dict = fs_utils.import_bib_files(*paths)
 
-    parseables = []
-    parseables_msg = "The following files are parseable:"
-    unparseables = []
-    unparseables_msg = "The following files are unparseable:"
-
-
-    parseables = [path for path in paths if isinstance(bibs_paths_dict[path], BibliographyData)]
-    unparseables = [path for path in paths if isinstance(bibs_paths_dict[path], PybtexError)]
-
-
-    for key in bibs_paths_dict.keys():
-        if bibs_paths_dict[key] is None:
-            unparseables.append(key)
-            unparseables_msg += "\n\t" + str(key.resolve())
-        else:
-            parseables.append(key)
-            parseables_msg += "\n\t" + str(key.resolve())
-
     if args.parseable:
-        print(parseables_msg)
+        fqpns = fs_utils.bib_subdict(bibs, BibliographyData)
     else:
-        print(unparseables_msg)
+        fqpns = fs_utils.bib_subdict(bibs, PybtexError)
+
+    msg = fs.utils.generate_test_message(fqpns, args.verbose)
+
+    print(msg)
 
 
 if __name__ == '__main__':
