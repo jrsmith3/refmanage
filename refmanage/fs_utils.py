@@ -36,31 +36,36 @@ def import_bib_files(*paths):
 
     For each argument passed to this method, a dictionary of relevant information is built. These dicts are assembled into a list and returned.
 
-    Each dictionary contains several keys for use in the functionality of refmanage:
+    :param pathlib.Path *paths: Path to BibTeX file.
+    :rtype list:
+    """
+    bibs = [construct_bib_dict(path) for path in paths]
+    return bibs
 
-    * path: A `pathlib.Path` object pointing to a file indicated on the command-line.
-    * bib: BibTeX data, stored as a `pybtex.database.BibliographyData` object, parsed from the file indicated by the `path` key. If the file was unparseable, the exception raised is stored in this variable.
+
+def construct_bib_dict(path):
+    """
+    Create dict containing data for use in refmanage
+
+    This method creates dicts containing information for use in refmanage corresponding to the file indicated by `path`. Each dictionary contains the following data:
+
+    * path: The `pathlib.Path` object passed as the argument to this method.
+    * bib: BibTeX data, stored as a `pybtex.database.BibliographyData` object, parsed from the file indicated by the `path` key. If the file was unparseable, the exception raised during parsing is stored in this variable.
     * terse_msg: Message corresponding to the file to be printed to STDOUT when the "--verbose" flag is absent from the command line.
     * verbose_msg: Message corresponding to the file to be printed to STDOUT when the "--verbose" flag is passed on the command line.
 
-    :param patlib.Path *paths: Path to BibTeX file.
-    :rtype list:
+    :param pathlib.Path path: Path to BibTeX file.
     """
-    bibs = []
+    bib = parse_bib_file(path)
+    terse_msg = path.resolve()
+    verbose_msg = generate_verbose_err_output_message(bib)
 
-    for path in paths:
-        bib = parse_bib_file(path)
-        terse_msg = path.resolve()
-        verbose_msg = generate_verbose_err_output_message(bib)
+    bib_dict = {"path": path,
+        "bib": bib,
+        "terse_msg": terse_msg,
+        "verbose_msg": verbose_msg,}
 
-        bib_dict = {"path": path,
-            "bib": bib,
-            "terse_msg": terse_msg,
-            "verbose_msg": verbose_msg,}
-
-        bibs.append(bib_dict)
-
-    return bibs
+    return bib_dict
 
 
 def parse_bib_file(path):
@@ -92,25 +97,6 @@ def bib_subdict(bibs, val_type):
     return subdict
 
 
-def generate_test_message(bibs, verbose):
-    """
-    Generate message for "test" functionality
-
-    :param dict bibs:
-    :param bool verbose:
-    :rtype str:
-    """
-    terse_msgs = [key.resolve() for (key, val) in bibs.iteritems()]
-    if verbose:
-        verbose_msgs = [generate_verbose_err_output_message(val) for (key, val) in bibs.iteritems()]
-    else:
-        verbose_msgs = [""] * len(terse_msgs)
-
-    msg = interleave_test_messages(terse_msgs, verbose_msgs)
-
-    return msg
-
-
 def generate_verbose_err_output_message(err):
     """
     Generate output message for an error
@@ -125,18 +111,3 @@ def generate_verbose_err_output_message(err):
         pass
 
     return msg
-
-
-def interleave_test_messages(terse_msgs, verbose_msgs):
-    """
-    Interleave messages to create output text
-
-    :param list terse_msgs:
-    :param list verbose_msgs:
-    :rtype str:
-    """
-    interleave_msgs = [x for t in zip(terse_msgs, verbose_msgs) for x in t]
-    msg = "".join(interleave_msgs)
-
-    return msg
-
