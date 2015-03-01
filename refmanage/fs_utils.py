@@ -51,3 +51,49 @@ def import_bib_files(*paths):
         del parser
 
     return bibs_paths_dict
+
+
+def bib_subdict(bibs, val_type):
+    """
+    Subdict with keys of instance `val_type`
+
+    :param dict bibs:
+    :param type val_type:
+    :rtype dict:
+    """
+    subdict = {key: val for (key, val) in bibs.iteritems() if isinstance(val, val_type)}
+    return subdict
+
+
+def generate_test_message(bibs, verbose):
+    """
+    Generate message for "test" functionality
+
+    :param dict bibs:
+    :param bool verbose:
+    :rtype str:
+    """
+    terse_msgs = [key.resolve() for (key, val) in bibs.iteritems()]
+    if verbose:
+        verbose_msgs = [generate_verbose_err_output_message(val) for (key, val) in bibs.iteritems()]
+    else:
+        verbose_msgs = [""] * len(terse_msgs)
+
+    return msgs
+
+
+def generate_verbose_err_output_message(err):
+    """
+    Generate output message for an error
+    """
+    msg = ""
+    try:
+        msg += val.error_type + "\n"
+        msg += val.message + "\n"
+        msg += val.linno + "\n"
+        msg += get_context()
+    except:
+        pass
+
+    return msg
+
