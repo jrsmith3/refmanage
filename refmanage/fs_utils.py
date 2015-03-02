@@ -36,7 +36,7 @@ def import_bib_files(*paths):
 
     For each argument passed to this method, a dictionary of relevant information is built. These dicts are assembled into a list and returned.
 
-    :param pathlib.Path *paths: Path to BibTeX file.
+    :param pathlib.Path *paths: Path to file possibly containing BibTeX data.
     :rtype list:
     """
     bibs = [construct_bib_dict(path) for path in paths]
@@ -54,7 +54,7 @@ def construct_bib_dict(path):
     * terse_msg: Message corresponding to the file to be printed to STDOUT when the "--verbose" flag is absent from the command line.
     * verbose_msg: Message corresponding to the file to be printed to STDOUT when the "--verbose" flag is passed on the command line.
 
-    :param pathlib.Path path: Path to BibTeX file.
+    :param pathlib.Path path: Path to file possibly containing BibTeX data.
     """
     bib = parse_bib_file(path)
     terse_msg = generate_terse_output_message(path)
@@ -74,7 +74,7 @@ def parse_bib_file(path):
 
     This method attempts to parse the BibTeX file located at `path`. If the file is parseable, a `pybtex.database.BibliographyData` object is returned, containing the bibliography data contained in the file. If the file is unparseable, the exception raised by the parser is returned.
 
-    :param pathlib.Path path: Path to BibTeX file.
+    :param pathlib.Path path: Path to file possibly containing BibTeX data.
     """
     parser = bibtex.Parser()
     try:
@@ -87,15 +87,25 @@ def parse_bib_file(path):
 
 def generate_terse_output_message(path):
     """
-    Generate non-verbose output message
+    STDOUT message corresponding to `path`
+
+    This method generates and returns the message to be returned to STDOUT which corresponds to the `path` argument to this method.
+
+    :param pathlib.Path path: Path to file possibly containing BibTeX data.
+    :rtype: str
     """
     terse_msg = str(path.resolve())
     return terse_msg
 
 
-def generate_verbose_err_output_message(err):
+def generate_verbose_err_output_message(bib):
     """
-    Generate output message for an error
+    STDOUT message corresponding to `path` when --verbose set
+
+    This method generates and returns the message to be returned to STDOUT which corresponds to the `path` argument to this method in the event the "--verbose" flag was passed on the command-line. This method can accept an arguent of two different types: a `pybtex.database.BibliographyData` or `pybtex.exceptions.PybtexError`. If `bib` is of type `BibliographyData`, this method will return an empty string. If `bib` is of type `PybtexError`, this method will gather data from the exception into a string which is returned.
+
+    :param bib: Output of `parse_bib_file`; can be either a `pybtex.database.BibliographyData` or `pybtex.exceptions.PybtexError`.
+    :rtype: str
     """
     msg = ""
     try:
