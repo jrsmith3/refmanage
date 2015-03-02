@@ -119,13 +119,14 @@ def generate_verbose_err_output_message(bib):
     return msg
 
 
-def bib_subdict(bibs, val_type):
-    """
-    Subdict with keys of instance `val_type`
+def bib_sublist(bibs, val_type):
+    # """
+    # Subdict with keys of instance `val_type`
 
-    :param dict bibs:
-    :param type val_type:
-    :rtype dict:
-    """
-    subdict = {key: val for (key, val) in bibs.iteritems() if isinstance(val, val_type)}
-    return subdict
+    # :param dict bibs:
+    # :param type val_type:
+    # :rtype dict:
+    # """
+    # subdict = {key: val for (key, val) in bibs.iteritems() if isinstance(val, val_type)}
+    # return subdict
+    pass
