@@ -57,7 +57,7 @@ def construct_bib_dict(path):
     :param pathlib.Path path: Path to BibTeX file.
     """
     bib = parse_bib_file(path)
-    terse_msg = path.resolve()
+    terse_msg = generate_terse_output_message(path)
     verbose_msg = generate_verbose_err_output_message(bib)
 
     bib_dict = {"path": path,
@@ -95,6 +95,14 @@ def bib_subdict(bibs, val_type):
     """
     subdict = {key: val for (key, val) in bibs.iteritems() if isinstance(val, val_type)}
     return subdict
+
+
+def generate_terse_output_message(path):
+    """
+    Generate non-verbose output message
+    """
+    terse_msg = str(path.resolve())
+    return terse_msg
 
 
 def generate_verbose_err_output_message(err):
