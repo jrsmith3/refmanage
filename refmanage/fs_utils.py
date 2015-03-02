@@ -85,18 +85,6 @@ def parse_bib_file(path):
     return bib
 
 
-def bib_subdict(bibs, val_type):
-    """
-    Subdict with keys of instance `val_type`
-
-    :param dict bibs:
-    :param type val_type:
-    :rtype dict:
-    """
-    subdict = {key: val for (key, val) in bibs.iteritems() if isinstance(val, val_type)}
-    return subdict
-
-
 def generate_terse_output_message(path):
     """
     Generate non-verbose output message
@@ -119,3 +107,15 @@ def generate_verbose_err_output_message(err):
         pass
 
     return msg
+
+
+def bib_subdict(bibs, val_type):
+    """
+    Subdict with keys of instance `val_type`
+
+    :param dict bibs:
+    :param type val_type:
+    :rtype dict:
+    """
+    subdict = {key: val for (key, val) in bibs.iteritems() if isinstance(val, val_type)}
+    return subdict
