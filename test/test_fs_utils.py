@@ -6,6 +6,24 @@ from pybtex.database import BibliographyData
 from pybtex.exceptions import PybtexError
 
 
+# Base classes
+# ============
+class Base(unittest.TestCase):
+    """
+    Base class for tests
+
+    This class is intended to be subclassed so that the same `setUp` method does not have to be rewritten for each class containing tests.
+    """
+    def setUp(self):
+        """
+        Create `Path`s to various control data
+        """
+        self.empty = pathlib.Path("test/controls/empty.bib")
+        self.one = pathlib.Path("test/controls/one.bib")
+        self.two = pathlib.Path("test/controls/two.bib")
+        self.invalid = pathlib.Path("test/controls/invalid.bib")
+        self.one_valid_one_invalid = pathlib.Path("test/controls/one_valid_one_invalid.bib")
+
 class MethodsInput(unittest.TestCase):
     """
     Tests methods which take input parameters
@@ -15,7 +33,7 @@ class MethodsInput(unittest.TestCase):
     pass
 
 
-class MethodsReturnType(unittest.TestCase):
+class MethodsReturnType(Base):
     """
     Tests methods' output types
     """
@@ -29,65 +47,50 @@ class MethodsReturnType(unittest.TestCase):
         """
         refmanage.fs_utils.construct_bib_dict should return a dict when called with argument pointing to a file containing valid BibTeX
         """
-        path = pathlib.Path("test/controls/empty.bib")
-        bib_dict = fs_utils.construct_bib_dict(path)
-        self.assertIsInstance(bib_dict, dict)
+        self.assertIsInstance(fs_utils.construct_bib_dict(self.empty), dict)
 
     def test_construct_bib_dict_invalid_bibtex(self):
         """
         refmanage.fs_utils.construct_bib_dict should return a dict when called with argument pointing to a file containing invalid BibTeX
         """
-        path = pathlib.Path("test/controls/invalid.bib")
-        bib_dict = fs_utils.construct_bib_dict(path)
-        self.assertIsInstance(bib_dict, dict)
+        self.assertIsInstance(fs_utils.construct_bib_dict(self.invalid), dict)
 
     def test_parse_bib_file_valid_bibtex(self):
         """
         refmanage.fs_utils.parse_bib_file should return a `pybtex.database.BibliographyData` if given a path that points to valid BibTeX
         """
-        path = pathlib.Path("test/controls/empty.bib")
-        bib = fs_utils.parse_bib_file(path)
-        self.assertIsInstance(bib, BibliographyData)
+        self.assertIsInstance(fs_utils.parse_bib_file(self.empty), BibliographyData)
 
     def test_parse_bib_file_invalid_bibtex(self):
         """
         refmanage.fs_utils.parse_bib_file should return a `pybtex.exceptions.PybtexError` if given a path that points to invalid BibTeX
         """
-        path = pathlib.Path("test/controls/invalid.bib")
-        bib = fs_utils.parse_bib_file(path)
-        self.assertIsInstance(bib, PybtexError)
+        self.assertIsInstance(fs_utils.parse_bib_file(self.invalid), PybtexError)
 
     def test_parse_bib_file_one_valid_one_invalid(self):
         """
         refmanage.fs_utils.parse_bib_file should return a `pybtex.exceptions.PybtexError` if given a path that points to a file containing both valid and invalid BibTeX
         """
-        path = pathlib.Path("test/controls/one_valid_one_invalid.bib")
-        bib = fs_utils.parse_bib_file(path)
-        self.assertIsInstance(bib, PybtexError)
+        self.assertIsInstance(fs_utils.parse_bib_file(self.one_valid_one_invalid), PybtexError)
 
     def test_gen_terse_msg(self):
         """
         refmanage.fs_utils.gen_terse_msg should return a str
         """
-        path = pathlib.Path("test/controls/empty.bib")
-        terse_msg = fs_utils.gen_terse_msg(path)
-        self.assertIsInstance(terse_msg, str)
+        self.assertIsInstance(fs_utils.gen_terse_msg(self.empty), str)
 
     def test_gen_verbose_msg(self):
         """
         refmanage.fs_utils.gen_verbose_msg should return a str
         """
-        path = pathlib.Path("test/controls/empty.bib")
-        bib = fs_utils.parse_bib_file(path)
-        verbose_msg = fs_utils.gen_verbose_msg(bib)
-        self.assertIsInstance(verbose_msg, str)
+        bib = fs_utils.parse_bib_file(self.empty)
+        self.assertIsInstance(fs_utils.gen_verbose_msg(bib), str)
 
     def test_import_bib_files(self):
         """
         refmanage.fs_utils.import_bib_files should return a list
         """
-        path = pathlib.Path("test/controls/empty.bib")
-        self.assertIsInstance(fs_utils.import_bib_files(path), list)
+        self.assertIsInstance(fs_utils.import_bib_files(self.empty), list)
 
     def test_bib_sublist(self):
         """
@@ -96,7 +99,7 @@ class MethodsReturnType(unittest.TestCase):
         pass
 
 
-class MethodsReturnValues(unittest.TestCase):
+class MethodsReturnValues(Base):
     """
     Tests values of methods against known values
     """
@@ -110,22 +113,20 @@ class MethodsReturnValues(unittest.TestCase):
         refmanage.fs_utils.construct_bib_dict should return a dict with the following keys: ["path", "bib", "terse_msg", "verbose_msg"]
         """
         keys = ["path", "bib", "terse_msg", "verbose_msg"]
-        path = pathlib.Path("test/controls/empty.bib")
-        bib_dict = fs_utils.construct_bib_dict(path)
+
+        bib_dict = fs_utils.construct_bib_dict(self.empty)
         [self.assertIn(key, keys) for key in bib_dict.keys()]
 
     def test_parse_bib_file_one_entry(self):
         """
         refmanage.fs_utils.parse_bib_file should return a `pybtex.database.BibliographyData` with one entry when a `Path` pointing at such a BibTeX file is passed to it
         """
-        path = pathlib.Path("test/controls/one.bib")
-        bib = fs_utils.parse_bib_file(path)
+        bib = fs_utils.parse_bib_file(self.one)
         self.assertEqual(len(bib.entries), 1)
 
     def test_parse_bib_file_two_entries(self):
         """
         refmanage.fs_utils.parse_bib_file should return a `pybtex.database.BibliographyData` with two entries when a `Path` pointing at such a BibTeX file is passed to it
         """
-        path = pathlib.Path("test/controls/two.bib")
-        bib = fs_utils.parse_bib_file(path)
+        bib = fs_utils.parse_bib_file(self.two)
         self.assertEqual(len(bib.entries), 2)
