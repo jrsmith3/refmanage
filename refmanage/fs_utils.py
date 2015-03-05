@@ -133,3 +133,35 @@ def bib_sublist(bibfile_data, val_type):
     sublist = [bib_dict for bib_dict in bibfile_data if isinstance(bib_dict["bib"], val_type)]
     return sublist
     pass
+
+
+def gen_stdout_test_msg(bibfile_data, verbose=False):
+    """
+    Generate appropriate message for STDOUT
+
+    This method creates the string to be printed to STDOUT from the items of the `bibfile_data` list argument. It generates either a terse or verbose message based on the state of the `verbose` argument.
+
+    :param list bibfile_data: List containing bib_dicts.
+    :param bool verbose: Directive to construct verbose/terse STDOUT string.
+    :rtype: str
+    """
+    msg_list = [gen_bib_dict_test_msg(bib_dict, verbose) for bib_dict in bibfile_data]
+    msg = "".join(msg_list)
+    return msg
+
+
+def gen_bib_dict_test_msg(bib_dict, verbose=False):
+    """
+    Generate appropriate STDOUT message given bib_dict
+
+    This method creates the string to be printed to STDOUT for a single bib_dict. It generates either a terse or verbose message based on the state of the `verbose` argument.
+
+    :param dict bib_dict: Dictionary containing bib file information.
+    :param bool verbose: Directive to construct verbose/terse STDOUT string.
+    :rtype: str
+    """
+    msg = bib_dict["terse_msg"]
+    if verbose:
+        msg += bib_dict["verbose_msg"]
+
+    return msg

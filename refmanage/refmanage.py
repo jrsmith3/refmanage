@@ -73,11 +73,11 @@ def test(args):
     bibfile_data = fs_utils.construct_bibfile_data(*paths)
 
     if args.parseable:
-        sublist = fs_utils.bib_sublist(bibs, BibliographyData)
+        sublist = fs_utils.bib_sublist(bibfile_data, BibliographyData)
     else:
-        sublist = fs_utils.bib_sublist(bibs, PybtexError)
+        sublist = fs_utils.bib_sublist(bibfile_data, PybtexError)
 
-    msg = fs.utils.generate_test_msg(fqpns, args.verbose)
+    msg = fs_utils.gen_stdout_test_msg(sublist, args.verbose)
 
     print(msg)
 

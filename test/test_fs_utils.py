@@ -99,6 +99,20 @@ class MethodsReturnType(Base):
         bibfile_data = fs_utils.construct_bibfile_data(self.empty, self.invalid)
         self.assertIsInstance(fs_utils.bib_sublist(bibfile_data, BibliographyData), list)
 
+    def test_gen_stdout_test_msg(self):
+        """
+        refmanage.fs_utils.gen_stdout_test_msg should return a str
+        """
+        bibfile_data = fs_utils.construct_bibfile_data(self.empty)
+        self.assertIsInstance(fs_utils.gen_stdout_test_msg(bibfile_data), str)
+
+    def test_gen_bib_dict_test_msg(self):
+        """
+        refmanage.fs_utils.gen_bib_dict_test_msg should return a str
+        """
+        bib_dict = fs_utils.construct_bib_dict(self.empty)
+        self.assertIsInstance(fs_utils.gen_bib_dict_test_msg(bib_dict), str)
+
 
 class MethodsReturnValues(Base):
     """
