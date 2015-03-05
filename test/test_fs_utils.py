@@ -25,13 +25,6 @@ class MethodsReturnType(unittest.TestCase):
         """
         self.assertIsInstance(fs_utils.handle_files_args(""), list)
 
-    def test_import_bib_files(self):
-        """
-        refmanage.fs_utils.import_bib_files should return a list
-        """
-        path = pathlib.Path("test/controls/empty.bib")
-        self.assertIsInstance(fs_utils.import_bib_files(path), list)
-
     def test_construct_bib_dict_valid_bibtex(self):
         """
         refmanage.fs_utils.construct_bib_dict should return a dict when called with argument pointing to a file containing valid BibTeX
@@ -88,6 +81,13 @@ class MethodsReturnType(unittest.TestCase):
         bib = fs_utils.parse_bib_file(path)
         verbose_msg = fs_utils.generate_verbose_err_output_message(bib)
         self.assertIsInstance(verbose_msg, str)
+
+    def test_import_bib_files(self):
+        """
+        refmanage.fs_utils.import_bib_files should return a list
+        """
+        path = pathlib.Path("test/controls/empty.bib")
+        self.assertIsInstance(fs_utils.import_bib_files(path), list)
 
     def test_bib_sublist(self):
         """

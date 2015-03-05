@@ -30,19 +30,6 @@ def handle_files_args(*paths_args):
     return paths
 
 
-def import_bib_files(*paths):
-    """
-    List of dicts for use in refmanage
-
-    For each argument passed to this method, a dictionary of relevant information is built. These dicts are assembled into a list and returned.
-
-    :param pathlib.Path *paths: Path to file possibly containing BibTeX data.
-    :rtype list:
-    """
-    bibs = [construct_bib_dict(path) for path in paths]
-    return bibs
-
-
 def construct_bib_dict(path):
     """
     Create dict containing data for use in refmanage
@@ -118,6 +105,19 @@ def generate_verbose_err_output_message(bib):
         pass
 
     return msg
+
+
+def import_bib_files(*paths):
+    """
+    List of dicts for use in refmanage
+
+    For each argument passed to this method, a dictionary of relevant information is built. These dicts are assembled into a list and returned.
+
+    :param pathlib.Path *paths: Path to file possibly containing BibTeX data.
+    :rtype list:
+    """
+    bibs = [construct_bib_dict(path) for path in paths]
+    return bibs
 
 
 def bib_sublist(bibs, val_type):
