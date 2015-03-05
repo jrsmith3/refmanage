@@ -70,7 +70,7 @@ def test(args):
     Implement "test" command-line functionality
     """
     paths = fs_utils.handle_files_args(*args.paths_args)
-    bibs_paths_dict = fs_utils.import_bib_files(*paths)
+    bibs_paths_dict = fs_utils.construct_bibfile_data(*paths)
 
     if args.parseable:
         fqpns = fs_utils.bib_subdict(bibs, BibliographyData)

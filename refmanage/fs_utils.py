@@ -107,11 +107,11 @@ def gen_verbose_msg(bib):
     return msg
 
 
-def import_bib_files(*paths):
+def construct_bibfile_data(*paths):
     """
-    List of dicts for use in refmanage
+    List of data corresponding to individual bib files
 
-    For each argument passed to this method, a dictionary of relevant information is built. These dicts are assembled into a list and returned.
+    For each argument passed to this method, a dictionary of relevant information is built from `construct_bib_dict`. These dicts are assembled into a list which is returned.
 
     :param pathlib.Path *paths: Path to file possibly containing BibTeX data.
     :rtype list:

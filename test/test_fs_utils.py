@@ -86,11 +86,11 @@ class MethodsReturnType(Base):
         bib = fs_utils.parse_bib_file(self.empty)
         self.assertIsInstance(fs_utils.gen_verbose_msg(bib), str)
 
-    def test_import_bib_files(self):
+    def test_construct_bibfile_data(self):
         """
-        refmanage.fs_utils.import_bib_files should return a list
+        refmanage.fs_utils.construct_bibfile_data should return a list
         """
-        self.assertIsInstance(fs_utils.import_bib_files(self.empty), list)
+        self.assertIsInstance(fs_utils.construct_bibfile_data(self.empty), list)
 
     def test_bib_sublist(self):
         """
@@ -103,7 +103,7 @@ class MethodsReturnValues(Base):
     """
     Tests values of methods against known values
     """
-    def test_import_bib_files(self):
+    def test_construct_bibfile_data(self):
         """
         """
         pass
