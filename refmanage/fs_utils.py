@@ -55,6 +55,7 @@ def construct_bib_dict(path):
     * verbose_msg: Message corresponding to the file to be printed to STDOUT when the "--verbose" flag is passed on the command line.
 
     :param pathlib.Path path: Path to file possibly containing BibTeX data.
+    :rtype dict:
     """
     bib = parse_bib_file(path)
     terse_msg = generate_terse_output_message(path)
