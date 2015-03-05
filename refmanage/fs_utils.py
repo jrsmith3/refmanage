@@ -120,14 +120,16 @@ def construct_bibfile_data(*paths):
     return bibs
 
 
-def bib_sublist(bibs, val_type):
-    # """
-    # Subdict with keys of instance `val_type`
+def bib_sublist(bibfile_data, val_type):
+    """
+    Sublist of bibfile_data whos elements are val_type
 
-    # :param dict bibs:
-    # :param type val_type:
-    # :rtype dict:
-    # """
-    # subdict = {key: val for (key, val) in bibs.iteritems() if isinstance(val, val_type)}
-    # return subdict
+    This method examines each bib_dict element of a bibfile_data list and returns the subset which can be classified according to val_type.
+
+    :param dict bibfile_data:
+    :param type val_type:
+    :rtype list:
+    """
+    sublist = [bib_dict for bib_dict in bibfile_data if isinstance(bib_dict["bib"], val_type)]
+    return sublist
     pass

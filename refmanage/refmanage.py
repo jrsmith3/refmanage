@@ -70,14 +70,14 @@ def test(args):
     Implement "test" command-line functionality
     """
     paths = fs_utils.handle_files_args(*args.paths_args)
-    bibs_paths_dict = fs_utils.construct_bibfile_data(*paths)
+    bibfile_data = fs_utils.construct_bibfile_data(*paths)
 
     if args.parseable:
-        fqpns = fs_utils.bib_subdict(bibs, BibliographyData)
+        sublist = fs_utils.bib_sublist(bibs, BibliographyData)
     else:
-        fqpns = fs_utils.bib_subdict(bibs, PybtexError)
+        sublist = fs_utils.bib_sublist(bibs, PybtexError)
 
-    msg = fs.utils.generate_test_message(fqpns, args.verbose)
+    msg = fs.utils.generate_test_msg(fqpns, args.verbose)
 
     print(msg)
 

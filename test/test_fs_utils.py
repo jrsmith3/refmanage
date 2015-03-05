@@ -94,9 +94,10 @@ class MethodsReturnType(Base):
 
     def test_bib_sublist(self):
         """
-        refmanage.fs_utils.bib_subdict should return a list
+        refmanage.fs_utils.bib_sublist should return a list
         """
-        pass
+        bibfile_data = fs_utils.construct_bibfile_data(self.empty, self.invalid)
+        self.assertIsInstance(fs_utils.bib_sublist(bibfile_data, BibliographyData), list)
 
 
 class MethodsReturnValues(Base):
