@@ -45,8 +45,8 @@ def construct_bib_dict(path):
     :rtype dict:
     """
     bib = parse_bib_file(path)
-    terse_msg = generate_terse_output_message(path)
-    verbose_msg = generate_verbose_err_output_message(bib)
+    terse_msg = gen_terse_msg(path)
+    verbose_msg = gen_verbose_msg(bib)
 
     bib_dict = {"path": path,
         "bib": bib,
@@ -73,7 +73,7 @@ def parse_bib_file(path):
     return bib
 
 
-def generate_terse_output_message(path):
+def gen_terse_msg(path):
     """
     STDOUT message corresponding to `path`
 
@@ -86,7 +86,7 @@ def generate_terse_output_message(path):
     return terse_msg
 
 
-def generate_verbose_err_output_message(bib):
+def gen_verbose_msg(bib):
     """
     STDOUT message corresponding to `path` when --verbose set
 

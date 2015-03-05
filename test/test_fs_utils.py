@@ -65,21 +65,21 @@ class MethodsReturnType(unittest.TestCase):
         bib = fs_utils.parse_bib_file(path)
         self.assertIsInstance(bib, PybtexError)
 
-    def test_generate_terse_output_message(self):
+    def test_gen_terse_msg(self):
         """
-        refmanage.fs_utils.generate_terse_output_message should return a str
+        refmanage.fs_utils.gen_terse_msg should return a str
         """
         path = pathlib.Path("test/controls/empty.bib")
-        terse_msg = fs_utils.generate_terse_output_message(path)
+        terse_msg = fs_utils.gen_terse_msg(path)
         self.assertIsInstance(terse_msg, str)
 
-    def test_generate_verbose_err_output_message(self):
+    def test_gen_verbose_msg(self):
         """
-        refmanage.fs_utils.generate_verbose_err_output_message should return a str
+        refmanage.fs_utils.gen_verbose_msg should return a str
         """
         path = pathlib.Path("test/controls/empty.bib")
         bib = fs_utils.parse_bib_file(path)
-        verbose_msg = fs_utils.generate_verbose_err_output_message(bib)
+        verbose_msg = fs_utils.gen_verbose_msg(bib)
         self.assertIsInstance(verbose_msg, str)
 
     def test_import_bib_files(self):
