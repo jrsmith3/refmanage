@@ -146,7 +146,7 @@ def gen_stdout_test_msg(bibfile_data, verbose=False):
     :rtype: str
     """
     msg_list = [gen_bib_dict_test_msg(bib_dict, verbose) for bib_dict in bibfile_data]
-    msg = "".join(msg_list)
+    msg = "\n\n".join(msg_list)
     return msg
 
 
@@ -162,6 +162,6 @@ def gen_bib_dict_test_msg(bib_dict, verbose=False):
     """
     msg = bib_dict["terse_msg"]
     if verbose:
-        msg += bib_dict["verbose_msg"]
+        msg += "\n" + bib_dict["verbose_msg"]
 
     return msg
