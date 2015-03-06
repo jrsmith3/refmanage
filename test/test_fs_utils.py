@@ -145,3 +145,17 @@ class MethodsReturnValues(Base):
         """
         bib = fs_utils.parse_bib_file(self.two)
         self.assertEqual(len(bib.entries), 2)
+
+    def test_gen_verbose_msg_valid_bibtex(self):
+        """
+        refmanage.fs_utils.gen_verbose_msg should return a str of zero length for an argument pointing to valid BibTeX.
+        """
+        bib = fs_utils.parse_bib_file(self.empty)
+        self.assertEqual(len(fs_utils.gen_verbose_msg(bib)), 0)
+
+    def test_gen_verbose_msg_invalid_bibtex(self):
+        """
+        refmanage.fs_utils.gen_verbose_msg should return a str of >0 length for an argument pointing to invalid BibTeX.
+        """
+        bib = fs_utils.parse_bib_file(self.invalid)
+        self.assertGreater(len(fs_utils.gen_verbose_msg(bib)), 0)
