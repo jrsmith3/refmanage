@@ -97,10 +97,10 @@ def gen_verbose_msg(bib):
     """
     msg = ""
     try:
-        msg += val.error_type + "\n"
-        msg += val.message + "\n"
-        msg += val.linno + "\n"
-        msg += get_context()
+        msg += bib.error_type + "\n"
+        msg += bib.message + "\n"
+        msg += str(bib.lineno) + "\n"
+        msg += bib.get_context()
     except:
         pass
 
