@@ -1,3 +1,9 @@
+0.1.1
+=====
+Clean up verbose output messages
+
+The output from the "--verbose" flag with the "test" functionality is slightly more useful. For unparseable files, the "--verbose" flag will print information from the exception that was raised as a result of the parsing attempt. This information allows the user to fix the BibTeX file such that it can be parsed.
+
 0.1.0
 =====
 First release with minimal functionality
