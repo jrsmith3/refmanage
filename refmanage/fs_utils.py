@@ -51,7 +51,7 @@ def construct_bib_dict(path):
     bib_dict = {"path": path,
         "bib": bib,
         "terse_msg": terse_msg,
-        "verbose_msg": verbose_msg,}
+        "verbose_msg": verbose_msg, }
 
     return bib_dict
 

@@ -17,5 +17,5 @@ setup(name="refmanage",
                    "Topic :: Text Processing",
                    "Natural Language :: English", ],
       install_requires=["pybtex",
-                        "pathlib2",],
+                        "pathlib2", ],
       entry_points={"console_scripts": "ref=refmanage.refmanage:main"},)
