@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from distutils.core import setup
+from setuptools import setup
 execfile("refmanage/version.py")
 
 setup(name="refmanage",
