@@ -159,3 +159,12 @@ class MethodsReturnValues(Base):
         """
         bib = fs_utils.parse_bib_file(self.invalid)
         self.assertGreater(len(fs_utils.gen_verbose_msg(bib)), 0)
+
+    def test_gen_verbose_msg_i44(self):
+        """
+        Test bug from issue #44
+        """
+        p = pathlib.Path("test/controls/10.1371__journal.pone.0115069.bib")
+        bib = fs_utils.parse_bib_file(p)
+        target = u'Invalid name format: Knauff, , Markus AND Nejasmic, , Jelica'
+        self.assertEqual(target, fs_utils.gen_verbose_msg(bib))

@@ -4,6 +4,7 @@ import glob
 import pathlib2 as pathlib
 from pybtex.database.input import bibtex
 from pybtex.exceptions import PybtexError
+from pybtex.scanner import TokenRequired
 
 
 def handle_files_args(*paths_args):
@@ -96,13 +97,13 @@ def gen_verbose_msg(bib):
     :rtype: str
     """
     msg = ""
-    try:
+    if isinstance(bib, TokenRequired):
         msg += bib.error_type + ": "
         msg += bib.message + "\n"
         msg += str(bib.lineno) + " "
         msg += bib.get_context()
-    except:
-        pass
+    elif isinstance(bib, PybtexError):
+        msg += bib.message
 
     return msg
 
