@@ -26,7 +26,24 @@ Examples
 ========
 View list of files which contain unparseable BibTeX::
 
-    $ ref -tv *.bib
+    $ ref -t *.bib
+    /home/username/bibfiles/unparseable1.bib
+    /home/username/bibfiles/unparseable2.bib
+    /home/username/bibfiles/unparseable3.bib
+
+View details about an unparseable file::
+
+    $ ref -tv unparseable1.bib
+    /home/username/bibfiles/unparseable1.bib
+    syntax error: '(' or '{' expected
+    1 @journal article{invalid,
+            ^^^
+
+View list of files which contain parseable BibTeX::
+
+    $ ref -tp *.bib
+    /home/username/bibfiles/parseable1.bib
+    /home/username/bibfiles/parseable2.bib
 
 
 License
