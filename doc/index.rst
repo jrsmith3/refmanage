@@ -17,13 +17,14 @@ This project features a command line program, `ref`, written in python, to manag
 
 Installation
 ============
+::
     
     $ pip install refmanage
 
 
 Examples
 ========
-View list of files which contain unparseable BibTeX
+View list of files which contain unparseable BibTeX::
 
     $ ref -tv *.bib
 
