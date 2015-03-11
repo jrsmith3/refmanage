@@ -8,4 +8,4 @@ Base Library (:mod:`refmanage`)
 """
 
 from version import __version__
-from fs_utils import *
+import fs_utils
