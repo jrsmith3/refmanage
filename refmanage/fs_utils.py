@@ -50,7 +50,7 @@ def construct_bib_dict(path):
     * verbose_msg: Message corresponding to the file to be printed to STDOUT when the "--verbose" flag is passed on the command line.
 
     :param pathlib.Path path: Path to file possibly containing BibTeX data.
-    :rtype dict:
+    :rtype: dict
     """
     bib = parse_bib_file(path)
     terse_msg = gen_terse_msg(path)
@@ -122,7 +122,7 @@ def construct_bibfile_data(*paths):
     For each argument passed to this method, a dictionary of relevant information is built from `construct_bib_dict`. These dicts are assembled into a list which is returned.
 
     :param pathlib.Path *paths: Path to file possibly containing BibTeX data.
-    :rtype list:
+    :rtype: list
     """
     bibs = [construct_bib_dict(path) for path in paths]
     return bibs
@@ -136,7 +136,7 @@ def bib_sublist(bibfile_data, val_type):
 
     :param dict bibfile_data:
     :param type val_type:
-    :rtype list:
+    :rtype: list
     """
     sublist = [bib_dict for bib_dict in bibfile_data if isinstance(bib_dict["bib"], val_type)]
     return sublist
