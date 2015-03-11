@@ -1,7 +1,7 @@
 refmanage - Manage a BibTeX database
 ====================================
 
-This README is a quickstart. See the [full documentation]() for more details.
+This README is a quickstart. See the [full documentation](http://refmanage.readthedocs.org/en/latest/) for more details.
 
 
 Scope
@@ -32,5 +32,4 @@ MIT
 
 Documentation
 =============
-Full documenation can be found in the `doc` directory, at the official [documentation page](), and within the module's docstrings.
-
+Full documenation can be found in the `doc` directory, at the official [documentation page](http://refmanage.readthedocs.org/en/latest/), and within the module's docstrings.
