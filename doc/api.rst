@@ -1,3 +1,5 @@
 .. automodule:: refmanage
-    :members: fs_utils
+
+.. automodule:: refmanage.fs_utils
+    :members:
     
