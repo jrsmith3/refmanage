@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 refmanage - Manage a BibTeX database
-====================================
+************************************
 
 .. toctree::
    :maxdepth: 2
