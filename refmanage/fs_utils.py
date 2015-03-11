@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+"""
+Utility functions (:mod:`refmanage.fs_utils`)
+=============================================
+
+.. currentmodule:: fs_utils
+"""
+
 import os
 import glob
 import pathlib2 as pathlib
