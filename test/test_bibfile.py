@@ -44,11 +44,13 @@ class Attributes(Base):
 
     These tests include type checks, setting immutable attributes, etc.
     """
-    def test_empty_file_bib_type(self):
+    # Type checking
+    # =============
+    def test_valid_bibtex_bib_type(self):
         """
         refmanage.BibFile.bib should be of type `pybtex.database.BibliographyData` if instantiated with an empty file
         """
-        b = BibFile(self.empty)
+        b = BibFile(self.two)
         self.assertIsInstance(b.bib, BibliographyData)
 
     def test_invalid_bibtex_bib_type(self):
@@ -64,6 +66,14 @@ class Attributes(Base):
         """
         b = BibFile(self.one_valid_one_invalid)
         self.assertIsInstance(b.bib, PybtexError)
+
+
+    def test_empty_file_bib_type(self):
+        """
+        refmanage.BibFile.bib should be of type `pybtex.database.BibliographyData` if instantiated with an empty file
+        """
+        b = BibFile(self.empty)
+        self.assertIsInstance(b.bib, BibliographyData)
 
     def test_valid_bibtex_bib_type(self):
         """
