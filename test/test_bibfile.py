@@ -84,50 +84,52 @@ class Attributes(Base):
     # Immutability
     # ============
     # The `path`, `bib`, and `src_txt` should be immutable once the `BibFile` object has been created. In other words, these attributes should not be changeable after the fact.
-
     def test_path_immutability(self):
         """
         Attempting to set `refmanage.BibFile.path` should raise (SOME KIND OF ERROR)
         """
-        b = BibFile(self.one)
-        self.assertRaises(xx, b.path)
+        # b = BibFile(self.one)
+        # self.assertRaises(xx, b.path)
+        self.fail()
 
     def test_bib_immutability(self):
         """
         Attempting to set `refmanage.BibFile.bib` should raise (SOME KIND OF ERROR)
         """
-        b = BibFile(self.one)
-        self.assertRaises(xx, b.bib)
+        # b = BibFile(self.one)
+        # self.assertRaises(xx, b.bib)
+        self.fail()
 
     def test_src_txt_immutability(self):
         """
         Attempting to set `refmanage.BibFile.src_txt` should raise (SOME KIND OF ERROR)
         """
-        b = BibFile(self.one)
-        self.assertRaises(xx, b.src_txt)
+        # b = BibFile(self.one)
+        # self.assertRaises(xx, b.src_txt)
+        self.fail()
 
     # Value checking
     # ==============
-    def test_empty_file_bib_type(self):
+    def test_empty_file_bib_length(self):
         """
-        refmanage.BibFile.bib should be of type `pybtex.database.BibliographyData` if instantiated with an empty file
+        refmanage.BibFile.bib should contain zero entries if instantiated with an empty file
         """
         b = BibFile(self.empty)
-        self.assertIsInstance(b.bib, BibliographyData)
+        self.assertEqual(len(b.bib.entries), 0)
 
-    def test_valid_bibtex_bib_type(self):
+    def test_one_entry_bibtex_file_bib_length(self):
         """
-        refmanage.BibFile.bib should be of type `pybtex.database.BibliographyData` if instantiated with a file containing valid BibTeX
+        refmanage.BibFile.bib should contain one entry if instantiated with a file containing valid BibTeX with a single entry
         """
         b = BibFile(self.one)
-        self.assertIsInstance(b.bib, BibliographyData)
+        self.assertEqual(len(b.bib.entries), 1)
 
-    def test_two_entries_bib_type(self):
+    def test_two_entries_bibtex_file_bib_length(self):
         """
-        refmanage.fs_utils.parse_bib_file should return a `pybtex.database.BibliographyData` with two entries when a `Path` pointing at such a BibTeX file is passed to it
+        refmanage.BibFile.bib should contain two entries if instantiated with a file containing valid BibTeX with two entries
         """
-        bib = fs_utils.parse_bib_file(self.two)
-        self.assertEqual(len(bib.entries), 2)
+        b = BibFile(self.two)
+        self.assertEqual(len(b.bib.entries), 2)
 
 
 class MethodsInput(unittest.TestCase):
