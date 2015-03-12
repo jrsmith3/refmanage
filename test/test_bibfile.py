@@ -55,10 +55,10 @@ class Attributes(Base):
 
     def test_src_txt_type(self):
         """
-        refmanage.BibFile.src_txt should be of type str
+        refmanage.BibFile.src_txt should be of type unicode
         """
         b = BibFile(self.empty)
-        self.assertIsInstance(b.src_txt, str)
+        self.assertIsInstance(b.src_txt, unicode)
 
     def test_valid_bibtex_bib_type(self):
         """
