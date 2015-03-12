@@ -88,25 +88,41 @@ class Attributes(Base):
         """
         Attempting to set `refmanage.BibFile.path` should raise (SOME KIND OF ERROR)
         """
-        # b = BibFile(self.one)
-        # self.assertRaises(xx, b.path)
-        self.fail()
+        b = BibFile(self.one)
+        try:
+            b.path = self.empty
+        except:
+            # Attempting to set `path` attribute raises an error; test passed!
+            pass
+        else:
+            self.fail("BibFile.path can be set after instantiation")
 
     def test_bib_immutability(self):
         """
         Attempting to set `refmanage.BibFile.bib` should raise (SOME KIND OF ERROR)
         """
-        # b = BibFile(self.one)
-        # self.assertRaises(xx, b.bib)
-        self.fail()
+        b = BibFile(self.one)
+        bib = b.bib
+        try:
+            b.bib = bib
+        except:
+            # Attempting to set `path` attribute raises an error; test passed!
+            pass
+        else:
+            self.fail("BibFile.bib can be set after instantiation")
 
     def test_src_txt_immutability(self):
         """
         Attempting to set `refmanage.BibFile.src_txt` should raise (SOME KIND OF ERROR)
         """
-        # b = BibFile(self.one)
-        # self.assertRaises(xx, b.src_txt)
-        self.fail()
+        b = BibFile(self.one)
+        try:
+            b.src_txt = "legitimate text string"
+        except:
+            # Attempting to set `path` attribute raises an error; test passed!
+            pass
+        else:
+            self.fail("BibFile.src_txt can be set after instantiation")
 
     # Value checking
     # ==============
