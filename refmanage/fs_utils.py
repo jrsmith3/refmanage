@@ -12,6 +12,7 @@ import pathlib2 as pathlib
 from pybtex.database.input import bibtex
 from pybtex.exceptions import PybtexError
 from pybtex.scanner import TokenRequired
+from bibfile import BibFile
 
 
 def handle_files_args(*paths_args):
@@ -47,7 +48,7 @@ def construct_bibfile_data(*paths):
     :param pathlib.Path *paths: Path to file possibly containing BibTeX data.
     :rtype: list
     """
-    bibs = [construct_bib_dict(path) for path in paths]
+    bibs = [BibFile(path) for path in paths]
     return bibs
 
 
@@ -57,11 +58,11 @@ def bib_sublist(bibfile_data, val_type):
 
     This method examines each bib_dict element of a bibfile_data list and returns the subset which can be classified according to val_type.
 
-    :param dict bibfile_data:
+    :param list bibfile_data: List containing `BibFile`s.
     :param type val_type:
     :rtype: list
     """
-    sublist = [bib_dict for bib_dict in bibfile_data if isinstance(bib_dict["bib"], val_type)]
+    sublist = [bibfile for bibfile in bibfile_data if isinstance(bibfile.bib, val_type)]
     return sublist
     pass
 
@@ -72,10 +73,10 @@ def gen_stdout_test_msg(bibfile_data, verbose=False):
 
     This method creates the string to be printed to STDOUT from the items of the `bibfile_data` list argument. It generates either a terse or verbose message based on the state of the `verbose` argument.
 
-    :param list bibfile_data: List containing bib_dicts.
+    :param list bibfile_data: List containing `BibFile`s.
     :param bool verbose: Directive to construct verbose/terse STDOUT string.
     :rtype: str
     """
-    msg_list = [gen_bib_dict_test_msg(bib_dict, verbose) for bib_dict in bibfile_data]
+    msg_list = [bibfile.test_msg(verbose) for bibfile in bibfile_data]
     msg = "\n\n".join(msg_list)
     return msg
