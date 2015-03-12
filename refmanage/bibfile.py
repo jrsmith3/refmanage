@@ -31,17 +31,14 @@ class BibFile(object):
         self.bib = bib
 
 
-def gen_terse_msg(path):
-    """
-    STDOUT message corresponding to `path`
+    def terse_msg(self):
+        """
+        STDOUT message listing `self.path`
 
-    This method generates and returns the message to be returned to STDOUT which corresponds to the `path` argument to this method.
-
-    :param pathlib.Path path: Path to file possibly containing BibTeX data.
-    :rtype: str
-    """
-    terse_msg = str(path.resolve())
-    return terse_msg
+        This method generates and returns the message to be returned to STDOUT which corresponds to `self.path`.
+        """
+        terse_msg = str(self.path.resolve())
+        return terse_msg
 
 
 def gen_verbose_msg(bib):
