@@ -46,6 +46,20 @@ class Attributes(Base):
     """
     # Type checking
     # =============
+    def test_path_type(self):
+        """
+        refmanage.BibFile.path should be of type `pathlib.Path`
+        """
+        b = BibFile(self.empty)
+        self.assertIsInstance(b.path, pathlib.Path)
+
+    def test_src_txt_type(self):
+        """
+        refmanage.BibFile.src_txt should be of type str
+        """
+        b = BibFile(self.empty)
+        self.assertIsInstance(b.src_txt, str)
+
     def test_valid_bibtex_bib_type(self):
         """
         refmanage.BibFile.bib should be of type `pybtex.database.BibliographyData` if instantiated with an empty file
@@ -67,7 +81,33 @@ class Attributes(Base):
         b = BibFile(self.one_valid_one_invalid)
         self.assertIsInstance(b.bib, PybtexError)
 
+    # Immutability
+    # ============
+    # The `path`, `bib`, and `src_txt` should be immutable once the `BibFile` object has been created. In other words, these attributes should not be changeable after the fact.
 
+    def test_path_immutability(self):
+        """
+        Attempting to set `refmanage.BibFile.path` should raise (SOME KIND OF ERROR)
+        """
+        b = BibFile(self.one)
+        self.assertRaises(xx, b.path)
+
+    def test_bib_immutability(self):
+        """
+        Attempting to set `refmanage.BibFile.bib` should raise (SOME KIND OF ERROR)
+        """
+        b = BibFile(self.one)
+        self.assertRaises(xx, b.bib)
+
+    def test_src_txt_immutability(self):
+        """
+        Attempting to set `refmanage.BibFile.src_txt` should raise (SOME KIND OF ERROR)
+        """
+        b = BibFile(self.one)
+        self.assertRaises(xx, b.src_txt)
+
+    # Value checking
+    # ==============
     def test_empty_file_bib_type(self):
         """
         refmanage.BibFile.bib should be of type `pybtex.database.BibliographyData` if instantiated with an empty file
