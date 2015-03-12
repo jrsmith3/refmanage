@@ -161,25 +161,33 @@ class MethodsReturnType(Base):
     """
     Tests methods' output types
     """
-    def test_gen_terse_msg(self):
+    def test_terse_msg(self):
         """
-        refmanage.fs_utils.gen_terse_msg should return a str
+        refmanage.BibFile.terse_msg() should return a str
         """
-        self.assertIsInstance(fs_utils.gen_terse_msg(self.empty), str)
+        b = BibFile(self.empty)
+        self.assertIsInstance(b.terse_msg(), str)
 
-    def test_gen_verbose_msg(self):
+    def test_verbose_msg(self):
         """
-        refmanage.fs_utils.gen_verbose_msg should return a str
+        refmanage.BibFile.verbose_msg() should return a str
         """
-        bib = fs_utils.parse_bib_file(self.empty)
-        self.assertIsInstance(fs_utils.gen_verbose_msg(bib), str)
+        b = BibFile(self.empty)
+        self.assertIsInstance(b.verbose_msg(), str)
 
-    def test_gen_bib_dict_test_msg(self):
+    def test_test_msg_verbose_false(self):
         """
-        refmanage.fs_utils.gen_bib_dict_test_msg should return a str
+        refmanage.BibFile.test_msg(verbose=False) should return a str
         """
-        bib_dict = fs_utils.construct_bib_dict(self.empty)
-        self.assertIsInstance(fs_utils.gen_bib_dict_test_msg(bib_dict), str)
+        b = BibFile(self.empty)
+        self.assertIsInstance(b.test_msg(False), str)
+
+    def test_test_msg_verbose_true(self):
+        """
+        refmanage.BibFile.test_msg(verbose=True) should return a str
+        """
+        b = BibFile(self.empty)
+        self.assertIsInstance(b.test_msg(True), str)
 
 
 class MethodsReturnValues(Base):
