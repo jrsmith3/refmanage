@@ -8,22 +8,35 @@ from pybtex.scanner import TokenRequired
 
 class BibFile(object):
     """
-    Class to handle files possibly containing BibTeX
+    Common functionality for a file containing BibTeX
 
-    `BibFile` objects are immutable.
-
-    :param pathlib.Path path: Path to file possibly containing BibTeX data.
+    :param pathlib.Path path: Path to file containing BibTeX data.
     """
     @property
     def path(self):
+        """
+        Path to file containing BibTeX (read-only)
+
+        :type: `pathlib.Path`
+        """
         return self._path
 
     @property
     def bib(self):
+        """
+        Bibliography data (read-only)
+
+        :type: `pybtex.database.BibliographyData`
+        """
         return self._bib
 
     @property
     def src_txt(self):
+        """
+        String representation of source BibTeX data (read-only)
+
+        :type: `str`
+        """
         return self._src_txt
 
     def __init__(self, path):
@@ -49,9 +62,7 @@ class BibFile(object):
 
     def terse_msg(self):
         """
-        STDOUT message listing `self.path`
-
-        This method generates and returns the message to be returned to STDOUT which corresponds to `self.path`.
+        Component of STDOUT message listing `self.path`
 
         :rtype: str
         """
@@ -61,7 +72,7 @@ class BibFile(object):
 
     def verbose_msg(self):
         """
-        STDOUT message corresponding to `self.path` when --verbose set
+        Component of STDOUT message when "--verbose" flag set
 
         This method generates and returns the message to be returned to STDOUT which corresponds to `self.path` in the event the "--verbose" flag was passed on the command-line. If `self.bib` is of type `BibliographyData`, this method will return an empty string. If `self.bib` is of type `PybtexError`, this method will gather data from the exception into a string which is returned.
         :rtype: str
@@ -80,10 +91,9 @@ class BibFile(object):
 
     def test_msg(self, verbose=False):
         """
-        Generate appropriate STDOUT message
+        STDOUT message for "test" command-line functionality
 
-        This method creates the string to be printed to STDOUT for a single bib_dict. It generates either a terse or verbose message based on the state of the `verbose` argument.
-
+        :param bool verbose: Switch to [in|ex]clude verbose message
         :rtype: str
         """
         msg = self.terse_msg()
