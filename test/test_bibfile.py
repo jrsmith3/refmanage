@@ -86,12 +86,12 @@ class Attributes(Base):
     # The `path`, `bib`, and `src_txt` should be immutable once the `BibFile` object has been created. In other words, these attributes should not be changeable after the fact.
     def test_path_immutability(self):
         """
-        Attempting to set `refmanage.BibFile.path` should raise (SOME KIND OF ERROR)
+        Attempting to set `refmanage.BibFile.path` should raise AttributeError
         """
         b = BibFile(self.one)
         try:
             b.path = self.empty
-        except:
+        except AttributeError:
             # Attempting to set `path` attribute raises an error; test passed!
             pass
         else:
@@ -99,13 +99,13 @@ class Attributes(Base):
 
     def test_bib_immutability(self):
         """
-        Attempting to set `refmanage.BibFile.bib` should raise (SOME KIND OF ERROR)
+        Attempting to set `refmanage.BibFile.bib` should raise AttributeError
         """
         b = BibFile(self.one)
         bib = b.bib
         try:
             b.bib = bib
-        except:
+        except AttributeError:
             # Attempting to set `path` attribute raises an error; test passed!
             pass
         else:
@@ -113,12 +113,12 @@ class Attributes(Base):
 
     def test_src_txt_immutability(self):
         """
-        Attempting to set `refmanage.BibFile.src_txt` should raise (SOME KIND OF ERROR)
+        Attempting to set `refmanage.BibFile.src_txt` should raise AttributeError
         """
         b = BibFile(self.one)
         try:
             b.src_txt = "legitimate text string"
-        except:
+        except AttributeError:
             # Attempting to set `path` attribute raises an error; test passed!
             pass
         else:
