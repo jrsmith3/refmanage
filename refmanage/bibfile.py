@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import StringIO
 import pathlib2 as pathlib
 from pybtex.database.input import bibtex
 from pybtex.exceptions import PybtexError
@@ -27,6 +28,7 @@ class BibFile(object):
 
     def __init__(self, path):
         self._path = path
+        with self.path.open() as f: self._src_txt = f.read()
         self._parse_bib_file()
 
 
@@ -38,7 +40,7 @@ class BibFile(object):
         """
         parser = bibtex.Parser()
         try:
-            bib = parser.parse_file(str(self.path.resolve()))
+            bib = parser.parse_stream(StringIO.StringIO(self.src_txt))
         except PybtexError, e:
             bib = e
 
