@@ -7,6 +7,8 @@ from pybtex.scanner import TokenRequired
 
 class BibFile(object):
     """
+    Class to handle files possibly containing BibTeX
+
     `BibFile` objects are immutable.
 
     :param pathlib.Path path: Path to file possibly containing BibTeX data.
