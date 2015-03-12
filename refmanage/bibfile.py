@@ -61,19 +61,18 @@ class BibFile(object):
 
         return msg
 
-def gen_bib_dict_test_msg(bib_dict, verbose=False):
-    """
-    Generate appropriate STDOUT message given bib_dict
 
-    This method creates the string to be printed to STDOUT for a single bib_dict. It generates either a terse or verbose message based on the state of the `verbose` argument.
+    def test_msg(self, verbose=False):
+        """
+        Generate appropriate STDOUT message
 
-    :param dict bib_dict: Dictionary containing bib file information.
-    :param bool verbose: Directive to construct verbose/terse STDOUT string.
-    :rtype: str
-    """
-    msg = bib_dict["terse_msg"]
-    if verbose:
-        msg += "\n" + bib_dict["verbose_msg"]
+        This method creates the string to be printed to STDOUT for a single bib_dict. It generates either a terse or verbose message based on the state of the `verbose` argument.
 
-    return msg
+        :rtype: str
+        """
+        msg = self.terse_msg()
+        if verbose:
+            msg += "\n" + self.verbose_msg()
+
+        return msg
 
