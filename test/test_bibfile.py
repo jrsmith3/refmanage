@@ -194,25 +194,25 @@ class MethodsReturnValues(Base):
     """
     Tests values of methods against known values
     """
-    def test_gen_verbose_msg_valid_bibtex(self):
+    def test_verbose_msg_valid_bibtex(self):
         """
-        refmanage.fs_utils.gen_verbose_msg should return a str of zero length for an argument pointing to valid BibTeX.
+        refmanage.BibFile.verbose_msg() should return a str of zero length for an argument pointing to valid BibTeX.
         """
-        bib = fs_utils.parse_bib_file(self.empty)
-        self.assertEqual(len(fs_utils.gen_verbose_msg(bib)), 0)
+        b = BibFile(self.two)
+        self.assertEqual(len(b.verbose_msg()), 0)
 
-    def test_gen_verbose_msg_invalid_bibtex(self):
+    def test_verbose_msg_invalid_bibtex(self):
         """
-        refmanage.fs_utils.gen_verbose_msg should return a str of >0 length for an argument pointing to invalid BibTeX.
+        refmanage.BibFile.verbose_msg() should return a str of >0 length for an argument pointing to invalid BibTeX.
         """
-        bib = fs_utils.parse_bib_file(self.invalid)
-        self.assertGreater(len(fs_utils.gen_verbose_msg(bib)), 0)
+        b = BibFile(self.invalid)
+        self.assertGreater(len(b.verbose_msg()), 0)
 
-    def test_gen_verbose_msg_i44(self):
+    def test_verbose_msg_i44(self):
         """
         Test bug from issue #44
         """
         p = pathlib.Path("test/controls/10.1371__journal.pone.0115069.bib")
-        bib = fs_utils.parse_bib_file(p)
+        b = BibFile(p)
         target = u'Invalid name format: Knauff, , Markus AND Nejasmic, , Jelica'
-        self.assertEqual(target, fs_utils.gen_verbose_msg(bib))
+        self.assertEqual(target, b.verbose_msg())
