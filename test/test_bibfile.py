@@ -1,43 +1,78 @@
 # -*- coding: utf-8 -*-
 import unittest
 import pathlib2 as pathlib
-from refmanage import fs_utils
+from refmanage import BibFile
 from pybtex.database import BibliographyData
 from pybtex.exceptions import PybtexError
 
 
-class Instantiation(unittest.TestCase):
+# Base classes
+# ============
+class Base(unittest.TestCase):
+    """
+    Base class for tests
+
+    This class is intended to be subclassed so that the same `setUp` method does not have to be rewritten for each class containing tests.
+    """
+    def setUp(self):
+        """
+        Create `Path`s to various control data
+        """
+        self.empty = pathlib.Path("test/controls/empty.bib")
+        self.one = pathlib.Path("test/controls/one.bib")
+        self.two = pathlib.Path("test/controls/two.bib")
+        self.invalid = pathlib.Path("test/controls/invalid.bib")
+        self.one_valid_one_invalid = pathlib.Path("test/controls/one_valid_one_invalid.bib")
+
+
+class Instantiation(Base):
     """
     Test all aspects of instantiating an object
 
     Includes input of wrong type, input outside of a bound, etc.
     """
-    def test_parse_bib_file_valid_bibtex(self):
+    def test_no_input(self):
         """
-        refmanage.fs_utils.parse_bib_file should return a `pybtex.database.BibliographyData` if given a path that points to valid BibTeX
+        refmanage.BibFile should raise (SOME KIND OF ERROR) if instantiated with no input
         """
-        self.assertIsInstance(fs_utils.parse_bib_file(self.empty), BibliographyData)
+        pass
 
-    def test_parse_bib_file_invalid_bibtex(self):
-        """
-        refmanage.fs_utils.parse_bib_file should return a `pybtex.exceptions.PybtexError` if given a path that points to invalid BibTeX
-        """
-        self.assertIsInstance(fs_utils.parse_bib_file(self.invalid), PybtexError)
 
-    def test_parse_bib_file_one_valid_one_invalid(self):
-        """
-        refmanage.fs_utils.parse_bib_file should return a `pybtex.exceptions.PybtexError` if given a path that points to a file containing both valid and invalid BibTeX
-        """
-        self.assertIsInstance(fs_utils.parse_bib_file(self.one_valid_one_invalid), PybtexError)
+class Attributes(Base):
+    """
+    Test attributes of BibFile
 
-    def test_parse_bib_file_one_entry(self):
+    These tests include type checks, setting immutable attributes, etc.
+    """
+    def test_empty_file_bib_type(self):
         """
-        refmanage.fs_utils.parse_bib_file should return a `pybtex.database.BibliographyData` with one entry when a `Path` pointing at such a BibTeX file is passed to it
+        refmanage.BibFile.bib should be of type `pybtex.database.BibliographyData` if instantiated with an empty file
         """
-        bib = fs_utils.parse_bib_file(self.one)
-        self.assertEqual(len(bib.entries), 1)
+        b = BibFile(self.empty)
+        self.assertIsInstance(b.bib, BibliographyData)
 
-    def test_parse_bib_file_two_entries(self):
+    def test_invalid_bibtex_bib_type(self):
+        """
+        refmanage.BibFile.bib should be of type `pybtex.exceptions.PybtexError` if instantiated with a file containing invalid BibTeX
+        """
+        b = BibFile(self.invalid)
+        self.assertIsInstance(b.bib, PybtexError)
+
+    def test_one_valid_one_invalid_bib_type(self):
+        """
+        refmanage.BibFile.bib should be of type `pybtex.exceptions.PybtexError` if instantiated with a file containing one valid and one invalid BibTeX entry
+        """
+        b = BibFile(self.one_valid_one_invalid)
+        self.assertIsInstance(b.bib, PybtexError)
+
+    def test_valid_bibtex_bib_type(self):
+        """
+        refmanage.BibFile.bib should be of type `pybtex.database.BibliographyData` if instantiated with a file containing valid BibTeX
+        """
+        b = BibFile(self.one)
+        self.assertIsInstance(b.bib, BibliographyData)
+
+    def test_two_entries_bib_type(self):
         """
         refmanage.fs_utils.parse_bib_file should return a `pybtex.database.BibliographyData` with two entries when a `Path` pointing at such a BibTeX file is passed to it
         """
