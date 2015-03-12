@@ -36,30 +36,30 @@ class BibFile(object):
         STDOUT message listing `self.path`
 
         This method generates and returns the message to be returned to STDOUT which corresponds to `self.path`.
+
+        :rtype: str
         """
-        terse_msg = str(self.path.resolve())
-        return terse_msg
+        msg = str(self.path.resolve())
+        return msg
 
 
-def gen_verbose_msg(bib):
-    """
-    STDOUT message corresponding to `path` when --verbose set
+    def verbose_msg(self):
+        """
+        STDOUT message corresponding to `self.path` when --verbose set
 
-    This method generates and returns the message to be returned to STDOUT which corresponds to the `path` argument to this method in the event the "--verbose" flag was passed on the command-line. This method can accept an arguent of two different types: a `pybtex.database.BibliographyData` or `pybtex.exceptions.PybtexError`. If `bib` is of type `BibliographyData`, this method will return an empty string. If `bib` is of type `PybtexError`, this method will gather data from the exception into a string which is returned.
+        This method generates and returns the message to be returned to STDOUT which corresponds to `self.path` in the event the "--verbose" flag was passed on the command-line. If `self.bib` is of type `BibliographyData`, this method will return an empty string. If `self.bib` is of type `PybtexError`, this method will gather data from the exception into a string which is returned.
+        :rtype: str
+        """
+        msg = ""
+        if isinstance(self.bib, TokenRequired):
+            msg += self.bib.error_type + ": "
+            msg += self.bib.message + "\n"
+            msg += str(self.bib.lineno) + " "
+            msg += self.bib.get_context()
+        elif isinstance(self.bib, PybtexError):
+            msg += self.bib.message
 
-    :param bib: Output of `parse_bib_file`; can be either a `pybtex.database.BibliographyData` or `pybtex.exceptions.PybtexError`.
-    :rtype: str
-    """
-    msg = ""
-    if isinstance(bib, TokenRequired):
-        msg += bib.error_type + ": "
-        msg += bib.message + "\n"
-        msg += str(bib.lineno) + " "
-        msg += bib.get_context()
-    elif isinstance(bib, PybtexError):
-        msg += bib.message
-
-    return msg
+        return msg
 
 def gen_bib_dict_test_msg(bib_dict, verbose=False):
     """
