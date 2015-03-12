@@ -35,7 +35,7 @@ class Instantiation(Base):
         """
         refmanage.BibFile should raise (SOME KIND OF ERROR) if instantiated with no input
         """
-        pass
+        self.fail()
 
 
 class Attributes(Base):
