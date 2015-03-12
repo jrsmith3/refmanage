@@ -1,28 +1,34 @@
 # -*- coding: utf-8 -*-
+import pathlib2 as pathlib
+from pybtex.database.input import bibtex
+from pybtex.exceptions import PybtexError
+from pybtex.scanner import TokenRequired
+
 
 class BibFile(object):
     """
+    `BibFile` objects are immutable.
+
     :param pathlib.Path path: Path to file possibly containing BibTeX data.
     """
     def __init__(self, path):
         self.path = path
+        self._parse_bib_file()
 
 
-def parse_bib_file(path):
-    """
-    Parse BibTeX file located at `path`
+    def _parse_bib_file(self):
+        """
+        Parse BibTeX file located at `self.path`
 
-    This method attempts to parse the BibTeX file located at `path`. If the file is parseable, a `pybtex.database.BibliographyData` object is returned, containing the bibliography data contained in the file. If the file is unparseable, the exception raised by the parser is returned.
+        This method attempts to parse the BibTeX file located at `self.path`. If the file is parseable, `self.bib` is set to a `pybtex.database.BibliographyData` object, containing the bibliography data contained in the file. If the file is unparseable, `self.bib` is set to the exception raised by the parser.
+        """
+        parser = bibtex.Parser()
+        try:
+            bib = parser.parse_file(str(self.path.resolve()))
+        except PybtexError, e:
+            bib = e
 
-    :param pathlib.Path path: Path to file possibly containing BibTeX data.
-    """
-    parser = bibtex.Parser()
-    try:
-        bib = parser.parse_file(str(path.resolve()))
-    except PybtexError, e:
-        bib = e
-
-    return bib
+        self.bib = bib
 
 
 def gen_terse_msg(path):
