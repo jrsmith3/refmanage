@@ -5,18 +5,12 @@ from refmanage import fs_utils
 from pybtex.database import BibliographyData
 from pybtex.exceptions import PybtexError
 
-class MethodsInput(unittest.TestCase):
-    """
-    Tests methods which take input parameters
 
-    Tests include: passing invalid input, etc.
+class Instantiation(unittest.TestCase):
     """
-    pass
+    Test all aspects of instantiating an object
 
-
-class MethodsReturnType(Base):
-    """
-    Tests methods' output types
+    Includes input of wrong type, input outside of a bound, etc.
     """
     def test_parse_bib_file_valid_bibtex(self):
         """
@@ -36,6 +30,34 @@ class MethodsReturnType(Base):
         """
         self.assertIsInstance(fs_utils.parse_bib_file(self.one_valid_one_invalid), PybtexError)
 
+    def test_parse_bib_file_one_entry(self):
+        """
+        refmanage.fs_utils.parse_bib_file should return a `pybtex.database.BibliographyData` with one entry when a `Path` pointing at such a BibTeX file is passed to it
+        """
+        bib = fs_utils.parse_bib_file(self.one)
+        self.assertEqual(len(bib.entries), 1)
+
+    def test_parse_bib_file_two_entries(self):
+        """
+        refmanage.fs_utils.parse_bib_file should return a `pybtex.database.BibliographyData` with two entries when a `Path` pointing at such a BibTeX file is passed to it
+        """
+        bib = fs_utils.parse_bib_file(self.two)
+        self.assertEqual(len(bib.entries), 2)
+
+
+class MethodsInput(unittest.TestCase):
+    """
+    Tests methods which take input parameters
+
+    Tests include: passing invalid input, etc.
+    """
+    pass
+
+
+class MethodsReturnType(Base):
+    """
+    Tests methods' output types
+    """
     def test_gen_terse_msg(self):
         """
         refmanage.fs_utils.gen_terse_msg should return a str
@@ -61,20 +83,6 @@ class MethodsReturnValues(Base):
     """
     Tests values of methods against known values
     """
-    def test_parse_bib_file_one_entry(self):
-        """
-        refmanage.fs_utils.parse_bib_file should return a `pybtex.database.BibliographyData` with one entry when a `Path` pointing at such a BibTeX file is passed to it
-        """
-        bib = fs_utils.parse_bib_file(self.one)
-        self.assertEqual(len(bib.entries), 1)
-
-    def test_parse_bib_file_two_entries(self):
-        """
-        refmanage.fs_utils.parse_bib_file should return a `pybtex.database.BibliographyData` with two entries when a `Path` pointing at such a BibTeX file is passed to it
-        """
-        bib = fs_utils.parse_bib_file(self.two)
-        self.assertEqual(len(bib.entries), 2)
-
     def test_gen_verbose_msg_valid_bibtex(self):
         """
         refmanage.fs_utils.gen_verbose_msg should return a str of zero length for an argument pointing to valid BibTeX.
