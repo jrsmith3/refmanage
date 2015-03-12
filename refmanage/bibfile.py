@@ -13,8 +13,20 @@ class BibFile(object):
 
     :param pathlib.Path path: Path to file possibly containing BibTeX data.
     """
+    @property
+    def path(self):
+        return self._path
+
+    @property
+    def bib(self):
+        return self._bib
+
+    @property
+    def src_txt(self):
+        return self._src_txt
+
     def __init__(self, path):
-        self.path = path
+        self._path = path
         self._parse_bib_file()
 
 
@@ -30,7 +42,7 @@ class BibFile(object):
         except PybtexError, e:
             bib = e
 
-        self.bib = bib
+        self._bib = bib
 
 
     def terse_msg(self):
