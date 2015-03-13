@@ -110,7 +110,7 @@ class BibFile(RefFile):
 
         :rtype: str
         """
-        return = ""
+        return ""
 
 
 class NonbibFile(RefFile):
