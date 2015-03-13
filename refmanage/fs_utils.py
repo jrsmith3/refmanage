@@ -12,7 +12,7 @@ import pathlib2 as pathlib
 from pybtex.database.input import bibtex
 from pybtex.exceptions import PybtexError
 from pybtex.scanner import TokenRequired
-from bibfile import BibFile
+from reffile import BibFile
 
 
 def handle_files_args(*paths_args):
