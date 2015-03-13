@@ -4,13 +4,12 @@ import pathlib2 as pathlib
 from pybtex.database.input import bibtex
 from pybtex.exceptions import PybtexError
 from pybtex.scanner import TokenRequired
+from exceptions import UnparseableBibtexError, ParseableBibtexError
 
 
-class BibFile(object):
+class RefFile(object):
     """
-    Common functionality for a file containing BibTeX
-
-    :param pathlib.Path path: Path to file containing BibTeX data.
+    Base class of BibTeX file model classes
     """
     @property
     def path(self):
@@ -21,14 +20,11 @@ class BibFile(object):
         """
         return self._path
 
+
     @property
     def bib(self):
-        """
-        Bibliography data (read-only)
+        raise NotImplementedError()
 
-        :type: `pybtex.database.BibliographyData`
-        """
-        return self._bib
 
     @property
     def src_txt(self):
@@ -39,6 +35,7 @@ class BibFile(object):
         """
         return self._src_txt
 
+
     def __init__(self, path):
         self._path = path
         with self.path.open() as f: self._src_txt = f.read()
@@ -46,18 +43,7 @@ class BibFile(object):
 
 
     def _parse_bib_file(self):
-        """
-        Parse BibTeX file located at `self.path`
-
-        This method attempts to parse the BibTeX file located at `self.path`. If the file is parseable, `self.bib` is set to a `pybtex.database.BibliographyData` object, containing the bibliography data contained in the file. If the file is unparseable, `self.bib` is set to the exception raised by the parser.
-        """
-        parser = bibtex.Parser()
-        try:
-            bib = parser.parse_stream(StringIO.StringIO(self.src_txt))
-        except PybtexError, e:
-            bib = e
-
-        self._bib = bib
+        raise NotImplementedError()
 
 
     def terse_msg(self):
@@ -71,22 +57,7 @@ class BibFile(object):
 
 
     def verbose_msg(self):
-        """
-        Component of STDOUT message when "--verbose" flag set
-
-        This method generates and returns the message to be returned to STDOUT which corresponds to `self.path` in the event the "--verbose" flag was passed on the command-line. If `self.bib` is of type `BibliographyData`, this method will return an empty string. If `self.bib` is of type `PybtexError`, this method will gather data from the exception into a string which is returned.
-        :rtype: str
-        """
-        msg = ""
-        if isinstance(self.bib, TokenRequired):
-            msg += self.bib.error_type + ": "
-            msg += self.bib.message + "\n"
-            msg += str(self.bib.lineno) + " "
-            msg += self.bib.get_context()
-        elif isinstance(self.bib, PybtexError):
-            msg += self.bib.message
-
-        return msg
+        raise NotImplementedError()
 
 
     def test_msg(self, verbose=False):
@@ -99,6 +70,97 @@ class BibFile(object):
         msg = self.terse_msg()
         if verbose:
             msg += "\n" + self.verbose_msg()
+
+        return msg
+
+
+class BibFile(RefFile):
+    """
+    Common functionality for a file containing BibTeX
+
+    :param pathlib.Path path: Path to file containing BibTeX data.
+    :raises UnparseableBibtexError: if the `pathlib.Path` points to an unparseable BibTeX file.
+    """
+    @property
+    def bib(self):
+        """
+        Bibliography data (read-only)
+
+        :type: `pybtex.database.BibliographyData`
+        """
+        return self._bib
+
+
+    def _parse_bib_file(self):
+        """
+        Parse BibTeX located at `self.path`, set `self.bib`
+        """
+        parser = bibtex.Parser()
+        try:
+            bib = parser.parse_stream(StringIO.StringIO(self.src_txt))
+        except PybtexError:
+            raise UnparseableBibtexError()
+
+        self._bib = bib
+
+
+    def verbose_msg(self):
+        """
+        Component of STDOUT message when "--verbose" flag set
+
+        :rtype: str
+        """
+        return = ""
+
+
+class NonbibFile(RefFile):
+    """
+    Common functionality for a file containing unparseable BibTeX
+
+    :param pathlib.Path path: Path to file containing BibTeX data.
+    :raises ParseableBibtexError: if the `pathlib.Path` points to a parseable BibTeX file.
+    """
+    @property
+    def bib(self):
+        """
+        Bibliography data (read-only)
+
+        :type: `pybtex.exceptions.PybtexError`
+        """
+        return self._bib
+
+
+    def _parse_bib_file(self):
+        """
+        Attempt to parse BibTeX located at `self.path`
+
+        Set `self.bib` with the exception raised upon parsing.
+        """
+        parser = bibtex.Parser()
+        try:
+            bib = parser.parse_stream(StringIO.StringIO(self.src_txt))
+        except PybtexError, e:
+            bib = e
+        else:
+            raise ParseableBibtexError()
+
+        self._bib = bib
+
+
+    def verbose_msg(self):
+        """
+        Component of STDOUT message when "--verbose" flag set
+
+        :rtype: str
+        """
+        msg = ""
+        if isinstance(self.bib, TokenRequired):
+            msg += self.bib.error_type + ": "
+            msg += self.bib.message + "\n"
+            msg += str(self.bib.lineno) + " "
+            msg += self.bib.get_context()
+        elif isinstance(self.bib, PybtexError):
+            msg += self.bib.message
 
         return msg
 
