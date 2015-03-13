@@ -60,8 +60,6 @@ def construct_bibfile_data(*paths):
     """
     List of data corresponding to individual bib files
 
-    For each argument passed to this method, a dictionary of relevant information is built from `construct_bib_dict`. These dicts are assembled into a list which is returned.
-
     :param pathlib.Path *paths: Path to file possibly containing BibTeX data.
     :rtype: list
     """
@@ -75,13 +73,12 @@ def bib_sublist(bibfile_data, val_type):
 
     This method examines each bib_dict element of a bibfile_data list and returns the subset which can be classified according to val_type.
 
-    :param list bibfile_data: List containing `BibFile`s.
+    :param list bibfile_data: List containing `RefFile`s.
     :param type val_type:
     :rtype: list
     """
     sublist = [bibfile for bibfile in bibfile_data if isinstance(bibfile.bib, val_type)]
     return sublist
-    pass
 
 
 def gen_stdout_test_msg(bibfile_data, verbose=False):
@@ -90,7 +87,7 @@ def gen_stdout_test_msg(bibfile_data, verbose=False):
 
     This method creates the string to be printed to STDOUT from the items of the `bibfile_data` list argument. It generates either a terse or verbose message based on the state of the `verbose` argument.
 
-    :param list bibfile_data: List containing `BibFile`s.
+    :param list bibfile_data: List containing `RefFile`s.
     :param bool verbose: Directive to construct verbose/terse STDOUT string.
     :rtype: str
     """
