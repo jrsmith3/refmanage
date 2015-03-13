@@ -12,7 +12,8 @@ import pathlib2 as pathlib
 from pybtex.database.input import bibtex
 from pybtex.exceptions import PybtexError
 from pybtex.scanner import TokenRequired
-from reffile import BibFile
+from reffile import BibFile, NonbibFile
+from exceptions import UnparseableBibtexError
 
 
 def handle_files_args(*paths_args):
@@ -39,6 +40,22 @@ def handle_files_args(*paths_args):
     return paths
 
 
+def reffile_factory(path):
+    """
+    Factory method to return child of RefFile
+
+    This method returns either a BibFile or NonbibFile object depending on which is appropriate based on if the `path` arg points to a file containing valid BibTeX or invalid BibTeX, respectively.
+
+    :param pathlib.Path path: Path to file possibly containing BibTeX data.
+    :rtype: BibFile or NonbibFile depending on input.
+    """
+    try:
+        b = BibFile(path)
+    except UnparseableBibtexError:
+        b = NonbibFile(path)
+    return b
+
+
 def construct_bibfile_data(*paths):
     """
     List of data corresponding to individual bib files
@@ -48,7 +65,7 @@ def construct_bibfile_data(*paths):
     :param pathlib.Path *paths: Path to file possibly containing BibTeX data.
     :rtype: list
     """
-    bibs = [BibFile(path) for path in paths]
+    bibs = [reffile_factory(path) for path in paths]
     return bibs
 
 
