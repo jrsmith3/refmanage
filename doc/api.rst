@@ -1,5 +1,5 @@
 .. automodule:: refmanage
-    :members: BibFile
+    :members: RefFile, BibFile, NonbibFile
 
 .. automodule:: refmanage.fs_utils
     :members:
