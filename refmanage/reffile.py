@@ -50,9 +50,9 @@ class RefFile(object):
         """
         Component of STDOUT message listing `self.path`
 
-        :rtype: str
+        :rtype: unicode
         """
-        msg = str(self.path.resolve())
+        msg = unicode(self.path.resolve())
         return msg
 
 
@@ -65,7 +65,7 @@ class RefFile(object):
         STDOUT message for "test" command-line functionality
 
         :param bool verbose: Switch to [in|ex]clude verbose message
-        :rtype: str
+        :rtype: unicode
         """
         msg = self.terse_msg()
         if verbose:
@@ -108,9 +108,9 @@ class BibFile(RefFile):
         """
         Component of STDOUT message when "--verbose" flag set
 
-        :rtype: str
+        :rtype: unicode
         """
-        return ""
+        return u""
 
 
 class NonbibFile(RefFile):
@@ -151,9 +151,9 @@ class NonbibFile(RefFile):
         """
         Component of STDOUT message when "--verbose" flag set
 
-        :rtype: str
+        :rtype: unicode
         """
-        msg = ""
+        msg = u""
         if isinstance(self.bib, TokenRequired):
             msg += self.bib.error_type + ": "
             msg += self.bib.message + "\n"
