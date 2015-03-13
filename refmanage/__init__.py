@@ -8,4 +8,4 @@ Base Library (:mod:`refmanage`)
 
 from version import __version__
 from reffile import RefFile, BibFile, NonbibFile
-import fs_utils
+import utils

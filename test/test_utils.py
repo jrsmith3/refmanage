@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 import pathlib2 as pathlib
-from refmanage import fs_utils
+from refmanage import utils
 from pybtex.database import BibliographyData
 from pybtex.exceptions import PybtexError
 
@@ -39,29 +39,29 @@ class MethodsReturnType(Base):
     """
     def test_handle_files_args(self):
         """
-        refmanage.fs_utils.handle_files_args should return a list
+        refmanage.utils.handle_files_args should return a list
         """
-        self.assertIsInstance(fs_utils.handle_files_args(""), list)
+        self.assertIsInstance(utils.handle_files_args(""), list)
 
     def test_construct_bibfile_data(self):
         """
-        refmanage.fs_utils.construct_bibfile_data should return a list
+        refmanage.utils.construct_bibfile_data should return a list
         """
-        self.assertIsInstance(fs_utils.construct_bibfile_data(self.empty), list)
+        self.assertIsInstance(utils.construct_bibfile_data(self.empty), list)
 
     def test_bib_sublist(self):
         """
-        refmanage.fs_utils.bib_sublist should return a list
+        refmanage.utils.bib_sublist should return a list
         """
-        bibfile_data = fs_utils.construct_bibfile_data(self.empty, self.invalid)
-        self.assertIsInstance(fs_utils.bib_sublist(bibfile_data, BibliographyData), list)
+        bibfile_data = utils.construct_bibfile_data(self.empty, self.invalid)
+        self.assertIsInstance(utils.bib_sublist(bibfile_data, BibliographyData), list)
 
     def test_gen_stdout_test_msg(self):
         """
-        refmanage.fs_utils.gen_stdout_test_msg should return a str
+        refmanage.utils.gen_stdout_test_msg should return a str
         """
-        bibfile_data = fs_utils.construct_bibfile_data(self.empty)
-        self.assertIsInstance(fs_utils.gen_stdout_test_msg(bibfile_data), unicode)
+        bibfile_data = utils.construct_bibfile_data(self.empty)
+        self.assertIsInstance(utils.gen_stdout_test_msg(bibfile_data), unicode)
 
 
 class MethodsReturnValues(Base):

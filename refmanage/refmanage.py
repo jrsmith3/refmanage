@@ -2,7 +2,7 @@
 import os
 import argparse
 import version
-import fs_utils
+import utils
 from pybtex.database import BibliographyData
 from pybtex.exceptions import PybtexError
 
@@ -69,15 +69,15 @@ def test(args):
     """
     Implement "test" command-line functionality
     """
-    paths = fs_utils.handle_files_args(*args.paths_args)
-    bibfile_data = fs_utils.construct_bibfile_data(*paths)
+    paths = utils.handle_files_args(*args.paths_args)
+    bibfile_data = utils.construct_bibfile_data(*paths)
 
     if args.parseable:
-        sublist = fs_utils.bib_sublist(bibfile_data, BibliographyData)
+        sublist = utils.bib_sublist(bibfile_data, BibliographyData)
     else:
-        sublist = fs_utils.bib_sublist(bibfile_data, PybtexError)
+        sublist = utils.bib_sublist(bibfile_data, PybtexError)
 
-    msg = fs_utils.gen_stdout_test_msg(sublist, args.verbose)
+    msg = utils.gen_stdout_test_msg(sublist, args.verbose)
 
     print(msg)
 
