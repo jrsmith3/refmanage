@@ -23,6 +23,11 @@ class RefFile(object):
 
     @property
     def bib(self):
+        """
+        Stub for child classes
+
+        :raises NotImplementedError:
+        """
         raise NotImplementedError()
 
 
@@ -57,6 +62,11 @@ class RefFile(object):
 
 
     def verbose_msg(self):
+        """
+        Stub for child classes
+
+        :raises NotImplementedError:
+        """
         raise NotImplementedError()
 
 
