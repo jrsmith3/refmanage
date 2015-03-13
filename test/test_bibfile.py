@@ -2,8 +2,8 @@
 import unittest
 import pathlib2 as pathlib
 from refmanage import BibFile
+from refmanage.exceptions import UnparseableBibtexError
 from pybtex.database import BibliographyData
-from pybtex.exceptions import PybtexError
 
 
 # Base classes
@@ -33,9 +33,21 @@ class Instantiation(Base):
     """
     def test_no_input(self):
         """
-        refmanage.BibFile should raise (SOME KIND OF ERROR) if instantiated with no input
+        refmanage.BibFile should raise TypeError if instantiated with no input
         """
         self.assertRaises(TypeError, BibFile)
+
+    def test_invalid_bibtex(self):
+        """
+        refmanage.BibFile should raise UnparseableBibtexError if instantiated with a path to an unparseable file.
+        """
+        self.assertRaises(UnparseableBibtexError, BibFile, self.invalid)
+
+    def test_one_valid_one_invalid_bib_type(self):
+        """
+        refmanage.BibFile should raise UnparseableBibtexError if instantiated with a path to a file containing both valid and invalid BibTeX
+        """
+        self.assertRaises(UnparseableBibtexError, BibFile, self.one_valid_one_invalid)
 
 
 class Attributes(Base):
@@ -60,26 +72,12 @@ class Attributes(Base):
         b = BibFile(self.empty)
         self.assertIsInstance(b.src_txt, unicode)
 
-    def test_valid_bibtex_bib_type(self):
+    def test_bib_type(self):
         """
-        refmanage.BibFile.bib should be of type `pybtex.database.BibliographyData` if instantiated with an empty file
+        refmanage.BibFile.bib should be of type `pybtex.database.BibliographyData`
         """
         b = BibFile(self.two)
         self.assertIsInstance(b.bib, BibliographyData)
-
-    def test_invalid_bibtex_bib_type(self):
-        """
-        refmanage.BibFile.bib should be of type `pybtex.exceptions.PybtexError` if instantiated with a file containing invalid BibTeX
-        """
-        b = BibFile(self.invalid)
-        self.assertIsInstance(b.bib, PybtexError)
-
-    def test_one_valid_one_invalid_bib_type(self):
-        """
-        refmanage.BibFile.bib should be of type `pybtex.exceptions.PybtexError` if instantiated with a file containing one valid and one invalid BibTeX entry
-        """
-        b = BibFile(self.one_valid_one_invalid)
-        self.assertIsInstance(b.bib, PybtexError)
 
     # Immutability
     # ============
@@ -163,31 +161,31 @@ class MethodsReturnType(Base):
     """
     def test_terse_msg(self):
         """
-        refmanage.BibFile.terse_msg() should return a str
+        refmanage.BibFile.terse_msg() should return a unicode
         """
         b = BibFile(self.empty)
-        self.assertIsInstance(b.terse_msg(), str)
+        self.assertIsInstance(b.terse_msg(), unicode)
 
     def test_verbose_msg(self):
         """
-        refmanage.BibFile.verbose_msg() should return a str
+        refmanage.BibFile.verbose_msg() should return a unicode
         """
         b = BibFile(self.empty)
-        self.assertIsInstance(b.verbose_msg(), str)
+        self.assertIsInstance(b.verbose_msg(), unicode)
 
     def test_test_msg_verbose_false(self):
         """
-        refmanage.BibFile.test_msg(verbose=False) should return a str
+        refmanage.BibFile.test_msg(verbose=False) should return a unicode
         """
         b = BibFile(self.empty)
-        self.assertIsInstance(b.test_msg(False), str)
+        self.assertIsInstance(b.test_msg(False), unicode)
 
     def test_test_msg_verbose_true(self):
         """
-        refmanage.BibFile.test_msg(verbose=True) should return a str
+        refmanage.BibFile.test_msg(verbose=True) should return a unicode
         """
         b = BibFile(self.empty)
-        self.assertIsInstance(b.test_msg(True), str)
+        self.assertIsInstance(b.test_msg(True), unicode)
 
 
 class MethodsReturnValues(Base):
@@ -200,19 +198,3 @@ class MethodsReturnValues(Base):
         """
         b = BibFile(self.two)
         self.assertEqual(len(b.verbose_msg()), 0)
-
-    def test_verbose_msg_invalid_bibtex(self):
-        """
-        refmanage.BibFile.verbose_msg() should return a str of >0 length for an argument pointing to invalid BibTeX.
-        """
-        b = BibFile(self.invalid)
-        self.assertGreater(len(b.verbose_msg()), 0)
-
-    def test_verbose_msg_i44(self):
-        """
-        Test bug from issue #44
-        """
-        p = pathlib.Path("test/controls/10.1371__journal.pone.0115069.bib")
-        b = BibFile(p)
-        target = u'Invalid name format: Knauff, , Markus AND Nejasmic, , Jelica'
-        self.assertEqual(target, b.verbose_msg())
