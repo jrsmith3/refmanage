@@ -61,7 +61,7 @@ class MethodsReturnType(Base):
         refmanage.fs_utils.gen_stdout_test_msg should return a str
         """
         bibfile_data = fs_utils.construct_bibfile_data(self.empty)
-        self.assertIsInstance(fs_utils.gen_stdout_test_msg(bibfile_data), str)
+        self.assertIsInstance(fs_utils.gen_stdout_test_msg(bibfile_data), unicode)
 
 
 class MethodsReturnValues(Base):
