@@ -7,5 +7,6 @@ Base Library (:mod:`refmanage`)
 """
 
 from version import __version__
+from refmanage import *
 from reffile import RefFile, BibFile, NonbibFile
 import utils
