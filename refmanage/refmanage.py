@@ -80,7 +80,3 @@ def test(args):
     msg = utils.gen_stdout_test_msg(sublist, args.verbose)
 
     print(msg)
-
-
-if __name__ == '__main__':
-    main()
