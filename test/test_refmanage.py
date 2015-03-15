@@ -11,13 +11,13 @@ class NoSpecifiedFunctionality(unittest.TestCase):
         """
         `ref` without arguments should print the help text
         """
-        pass
+        self.fail()
 
     def test_version(self):
         """
         `ref --version` should return version string
         """
-        pass
+        self.fail()
 
 class TestFunctionality(unittest.TestCase):
     """
@@ -27,41 +27,41 @@ class TestFunctionality(unittest.TestCase):
         """
         `ref test` without additonal arguments should print the help text
         """
-        pass
+        self.fail()
 
     def test_default(self):
         """
         `ref test *.bib` without flags should default to --unparseable and print list of unparseable files
         """
-        pass
+        self.fail()
 
     def test_unparseable(self):
 
         """
         `ref test -u *.bib` should print list of unparseable files
         """
-        pass
+        self.fail()
 
     def test_unparseable_verbose(self):
         """
         `ref test -uv *.bib` should print list of unparseable files with information about corresponding parsing message
         """
-        pass
+        self.fail()
 
     def test_parseable(self):
         """
         `ref test -p *.bib` should print list of parseable files
         """
-        pass
+        self.fail()
 
     def test_parseable_verbose(self):
         """
         `ref test -pv *.bib` should print list of parseable files and nothing more
         """
-        pass
+        self.fail()
 
     def test_parseable_unparseable(self):
         """
         `ref test -up *.bib` should exit with an error
         """
-        pass
+        self.fail()
