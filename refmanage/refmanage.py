@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
 import argparse
 import version
 import utils
@@ -52,7 +53,7 @@ def cli_args_dispatcher(parser):
     args = parser.parse_args()
 
     if args.version:
-        version(args)
+        ver(args)
     elif args.test:
         test(args)
 
@@ -65,11 +66,11 @@ def main():
     cli_args_dispatcher(parser)
 
 
-def version(args):
+def ver(args):
     """
     Implement "version" command-line functionality
     """
-    print version.__version__
+    sys.stdout.write(version.__version__)
 
 
 def test(args):
@@ -86,4 +87,4 @@ def test(args):
 
     msg = utils.gen_stdout_test_msg(sublist, args.verbose)
 
-    print(msg)
+    sys.stdout.write(msg)
