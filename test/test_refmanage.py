@@ -2,8 +2,35 @@
 import unittest
 import pathlib2 as pathlib
 import refmanage
+import sys
+import StringIO
 
-class NoSpecifiedFunctionality(unittest.TestCase):
+
+class Base(unittest.TestCase):
+    """
+    Base class for tests
+
+    This class is intended to be subclassed so that the same `setUp` method does not have to be rewritten for each class containing tests.
+    """
+    def setUp(self):
+        """
+        Define parser and set up StringIO to catch STDOUT
+        """
+        # Redirect STDOUT to a StringIO object.
+        self.old_stdout = sys.stdout
+        self.f = StringIO.StringIO()
+        sys.stdout = self.f
+
+        self.parser = refmanage.define_parser()
+
+    def tearDown(self):
+        """
+        Reset STDOUT
+        """
+        sys.stdout = self.old_stdout
+
+
+class NoSpecifiedFunctionality(Base):
     """
     Tests when no functionality has been specified on cli
     """
@@ -17,7 +44,10 @@ class NoSpecifiedFunctionality(unittest.TestCase):
         """
         `ref --version` should return version string
         """
-        self.fail()
+        args = self.parser.parse_args(["--version"])
+        refmanage.cli_args_dispatcher(args)
+
+        self.assertEqual(refmanage.__version__, self.f.getvalue())
 
 class TestFunctionality(unittest.TestCase):
     """
