@@ -52,7 +52,7 @@ def cli_args_dispatcher(parser):
     args = parser.parse_args()
 
     if args.version:
-        print version.__version__
+        version(args)
     elif args.test:
         test(args)
 
@@ -63,6 +63,13 @@ def main():
     """
     parser = define_parser()
     cli_args_dispatcher(parser)
+
+
+def version(args):
+    """
+    Implement "version" command-line functionality
+    """
+    print version.__version__
 
 
 def test(args):
