@@ -2,7 +2,7 @@
 import unittest
 import pathlib2 as pathlib
 from refmanage import NonbibFile
-from refmanage.exceptions import UnparseableBibtexError, ParseableBibtexError
+from refmanage.ref_exceptions import UnparseableBibtexError, ParseableBibtexError
 from pybtex.exceptions import PybtexError
 
 

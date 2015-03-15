@@ -4,7 +4,7 @@ import pathlib2 as pathlib
 from pybtex.database.input import bibtex
 from pybtex.exceptions import PybtexError
 from pybtex.scanner import TokenRequired
-from exceptions import UnparseableBibtexError, ParseableBibtexError
+from ref_exceptions import UnparseableBibtexError, ParseableBibtexError
 
 
 class RefFile(object):

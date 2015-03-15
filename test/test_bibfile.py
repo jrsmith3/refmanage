@@ -2,7 +2,7 @@
 import unittest
 import pathlib2 as pathlib
 from refmanage import BibFile
-from refmanage.exceptions import UnparseableBibtexError
+from refmanage.ref_exceptions import UnparseableBibtexError
 from pybtex.database import BibliographyData
 
 

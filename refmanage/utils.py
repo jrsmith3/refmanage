@@ -13,7 +13,7 @@ from pybtex.database.input import bibtex
 from pybtex.exceptions import PybtexError
 from pybtex.scanner import TokenRequired
 from reffile import BibFile, NonbibFile
-from exceptions import UnparseableBibtexError
+from ref_exceptions import UnparseableBibtexError
 
 
 def handle_files_args(*paths_args):
