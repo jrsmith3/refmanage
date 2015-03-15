@@ -46,12 +46,10 @@ def define_parser():
     return parser
 
 
-def cli_args_dispatcher(parser):
+def cli_args_dispatcher(args):
     """
     Dispatch functionality based on command-line args
     """
-    args = parser.parse_args()
-
     if args.version:
         ver(args)
     elif args.test:
@@ -63,7 +61,8 @@ def main():
     Method called via command-line
     """
     parser = define_parser()
-    cli_args_dispatcher(parser)
+    args = parser.parse_args()
+    cli_args_dispatcher(args)
 
 
 def ver(args):
