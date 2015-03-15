@@ -35,13 +35,15 @@ class Instantiation(Base):
         """
         refmanage.NonbibFile should raise TypeError if instantiated with no input
         """
-        self.assertRaises(TypeError, NonbibFile)
+        with self.assertRaises(TypeError):
+            NonbibFile()
 
     def test_valid_bibtex(self):
         """
         refmanage.NonbibFile should raise ParseableBibtexError if instantiated with a path to a parseable file.
         """
-        self.assertRaises(ParseableBibtexError, NonbibFile, self.two)
+        with self.assertRaises(ParseableBibtexError):
+            NonbibFile(self.two)
 
     def test_one_valid_one_invalid_bib_type(self):
         """

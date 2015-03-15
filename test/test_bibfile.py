@@ -35,19 +35,22 @@ class Instantiation(Base):
         """
         refmanage.BibFile should raise TypeError if instantiated with no input
         """
-        self.assertRaises(TypeError, BibFile)
+        with self.assertRaises(TypeError):
+            BibFile()
 
     def test_invalid_bibtex(self):
         """
         refmanage.BibFile should raise UnparseableBibtexError if instantiated with a path to an unparseable file.
         """
-        self.assertRaises(UnparseableBibtexError, BibFile, self.invalid)
+        with self.assertRaises(UnparseableBibtexError):
+            BibFile(self.invalid)
 
     def test_one_valid_one_invalid_bib_type(self):
         """
         refmanage.BibFile should raise UnparseableBibtexError if instantiated with a path to a file containing both valid and invalid BibTeX
         """
-        self.assertRaises(UnparseableBibtexError, BibFile, self.one_valid_one_invalid)
+        with self.assertRaises(UnparseableBibtexError):
+            BibFile(self.one_valid_one_invalid)
 
 
 class Attributes(Base):
