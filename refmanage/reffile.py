@@ -79,7 +79,7 @@ class RefFile(object):
         """
         msg = self.terse_msg()
         if verbose:
-            msg += "\n" + self.verbose_msg()
+            msg += "\n" + self.verbose_msg() + "\n"
 
         return msg
 

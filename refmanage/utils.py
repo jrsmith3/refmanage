@@ -92,5 +92,5 @@ def gen_stdout_test_msg(bibfile_data, verbose=False):
     :rtype: str
     """
     msg_list = [bibfile.test_msg(verbose) for bibfile in bibfile_data]
-    msg = "\n\n".join(msg_list)
+    msg = "\n".join(msg_list)
     return msg
