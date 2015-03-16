@@ -69,7 +69,7 @@ def ver(args):
     """
     Implement "version" command-line functionality
     """
-    sys.stdout.write(version.__version__)
+    sys.stdout.write(version.__version__ + "\n")
 
 
 def test(args):
